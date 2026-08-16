@@ -636,14 +636,21 @@ html, body {
 }
 .leaflet-bar a:hover { color: var(--gold) !important; }
 
+/* Боковая клавиша панели — только на мобильных */
+.panel-toggle { display: none; }
+
 @media (max-width: 640px) {
-  /* панель — нижняя шторка на всю ширину */
+  /* панель — нижняя шторка, по умолчанию спрятана, выезжает слайдом */
   #panel {
     top: auto; bottom: 0; left: 0; right: 0;
     width: auto; max-height: 54vh; overflow-y: auto;
     border-left: none; border-right: none; border-bottom: none;
     padding-bottom: 4px;
+    transform: translateY(103%);
+    transition: transform .28s ease, visibility .28s;
+    visibility: hidden;
   }
+  #panel.is-open { transform: none; visibility: visible; }
   #panel::-webkit-scrollbar { width: 6px; }
   #panel::-webkit-scrollbar-thumb { background: #3a3223; }
   .panel-header { padding: 8px 12px 6px; position: sticky; top: 0; z-index: 5; background: var(--panel-bg); }
@@ -683,4 +690,21 @@ html, body {
 
   /* зум-кнопки крупнее */
   .leaflet-bar a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 18px !important; }
+
+  /* боковая клавиша: вкладка у правого края */
+  .panel-toggle {
+    display: block;
+    position: absolute; right: 0; top: 64%;
+    width: 40px; height: 84px;
+    border: 1px solid var(--gold-border); border-right: none;
+    border-radius: 12px 0 0 12px;
+    background: var(--panel-bg);
+    color: var(--gold); font-size: 18px; line-height: 1;
+    box-shadow: -4px 2px 16px rgba(0, 0, 0, 0.55);
+    z-index: 1160; cursor: pointer;
+    writing-mode: vertical-rl; letter-spacing: 3px;
+    transition: background .15s, color .15s;
+  }
+  .panel-toggle:hover { color: var(--gold); background: rgba(22, 29, 36, 0.96); }
+  .panel-toggle.is-open { color: var(--gold-dim); }
 }

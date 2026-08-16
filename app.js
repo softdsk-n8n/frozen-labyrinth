@@ -227,6 +227,7 @@
       }
     }
     setMobDropdown(false); // выбрали — закрываем список, чтобы видеть карту
+    if (isMobile()) setPanel(false); // на мобильном прячем и всю шторку
     rebuildSpawnDots();
     renderMobList();
   }
@@ -370,8 +371,23 @@
     }
   });
 
+  // ============ Мобильная панель-шторка ============
+  var panel = document.getElementById('panel');
+  var panelToggle = document.getElementById('panelToggle');
+
+  function isMobile() { return window.matchMedia('(max-width: 640px)').matches; }
+
+  function setPanel(open) {
+    panel.classList.toggle('is-open', open);
+    panelToggle.classList.toggle('is-open', open);
+  }
+  panelToggle.addEventListener('click', function () {
+    setPanel(!panel.classList.contains('is-open'));
+  });
+
   // кнопка «Подсветить спавны» в карточке моба
   map.on('popupopen', function (ev) {
+    if (isMobile()) setPanel(false); // открыли карточку точки — прячем шторку
     var btn = ev.popup.getElement() && ev.popup.getElement().querySelector('.js-show-spawns');
     if (btn) {
       btn.addEventListener('click', function () {
@@ -442,6 +458,7 @@
       document.getElementById('questModal').hidden = true;
       document.getElementById('guideModal').hidden = true;
       setMobDropdown(false);
+      setPanel(false);
     }
   });
 
