@@ -14,7 +14,9 @@
   --green: #4ad97e;
   --ice: #7fd4ff;
   --purple: #b44ae0;
+  --lvl-hi: #ff9c3f;
   --font: Tahoma, Arial, 'Segoe UI', sans-serif;
+  --font-title: 'Cinzel', 'Times New Roman', serif;
 }
 
 * { box-sizing: border-box; }
@@ -35,6 +37,41 @@ html, body {
   image-rendering: crisp-edges;
 }
 
+/* ============ Ледяная виньетка ============ */
+.vignette {
+  position: fixed; inset: 0; z-index: 420; pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 52%, rgba(96, 176, 224, 0.10) 76%, rgba(24, 68, 108, 0.30) 100%),
+    linear-gradient(180deg, rgba(127, 212, 255, 0.05), transparent 12%, transparent 88%, rgba(127, 212, 255, 0.06));
+}
+
+/* ============ Заголовок поверх карты ============ */
+.map-title {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  z-index: 430; text-align: center; pointer-events: none;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 26px rgba(127, 212, 255, 0.35);
+}
+.map-title h1 {
+  margin: 0; font-family: var(--font-title); font-weight: 700;
+  font-size: clamp(20px, 3.4vw, 34px); letter-spacing: 3px;
+  color: #e9f4ff; text-transform: uppercase;
+  background: linear-gradient(180deg, #f4fbff 25%, #9fd8f4 60%, #5fa8cc);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.map-title span {
+  display: block; margin-top: 2px;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(232, 208, 141, 0.8);
+}
+
+/* ============ Роза ветров ============ */
+.compass {
+  position: absolute; right: 14px; bottom: 14px; z-index: 430;
+  width: clamp(64px, 8vw, 88px); height: auto; pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.7));
+}
+
 /* ============ Снегопад ============ */
 .snowfall {
   position: fixed; inset: 0; z-index: 450; pointer-events: none; overflow: hidden;
@@ -47,18 +84,26 @@ html, body {
 }
 .snow-layer--far {
   background-image:
-    radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,0.55) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 45% 68%, rgba(255,255,255,0.4) 50%, transparent 51%),
-    radial-gradient(2px 2px at 78% 38%, rgba(255,255,255,0.5) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 92% 82%, rgba(255,255,255,0.35) 50%, transparent 51%);
-  background-size: 420px 420px;
-  animation-duration: 26s;
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 45% 68%, rgba(255,255,255,0.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 38%, rgba(255,255,255,0.4) 50%, transparent 51%);
+  background-size: 380px 380px;
+  animation-duration: 34s;
+}
+.snow-layer--mid {
+  background-image:
+    radial-gradient(2px 2px at 30% 45%, rgba(255,255,255,0.55) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 65% 12%, rgba(255,255,255,0.45) 50%, transparent 51%),
+    radial-gradient(2px 2px at 88% 78%, rgba(255,255,255,0.5) 50%, transparent 51%);
+  background-size: 460px 460px;
+  animation-duration: 24s;
 }
 .snow-layer--near {
   background-image:
     radial-gradient(3px 3px at 25% 15%, rgba(255,255,255,0.7) 50%, transparent 51%),
     radial-gradient(2.5px 2.5px at 60% 55%, rgba(255,255,255,0.6) 50%, transparent 51%),
-    radial-gradient(3.5px 3.5px at 85% 75%, rgba(255,255,255,0.55) 50%, transparent 51%);
+    radial-gradient(3.5px 3.5px at 85% 75%, rgba(255,255,255,0.55) 50%, transparent 51%),
+    radial-gradient(1.8px 1.8px at 50% 90%, rgba(210, 240, 255, 0.8) 50%, transparent 51%);
   background-size: 560px 560px;
   animation-duration: 17s;
 }
@@ -79,7 +124,7 @@ html, body {
 
 #panel {
   position: absolute; top: 12px; right: 12px; z-index: 1100;
-  width: 250px; padding: 0 0 10px;
+  width: 252px; padding: 0 0 10px;
 }
 
 .panel-header {
@@ -88,12 +133,12 @@ html, body {
   border-bottom: 1px solid rgba(90, 75, 49, 0.6);
 }
 .panel-title {
-  margin: 0; font-size: 14px; font-weight: bold; color: var(--gold);
-  letter-spacing: 0.4px; text-shadow: 0 1px 2px #000;
+  margin: 0; font-family: var(--font-title); font-size: 13.5px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.8px; text-shadow: 0 1px 2px #000;
 }
 .panel-subtitle {
-  margin: 2px 0 0; font-size: 11px; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 1.5px;
+  margin: 2px 0 0; font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 2px;
 }
 
 .panel-section { padding: 8px 12px 0; }
@@ -124,6 +169,7 @@ html, body {
   color: #1a1408; background: linear-gradient(180deg, #f0d9a0, #cdb26e);
   border-color: var(--gold-border-hi);
   text-shadow: none; font-weight: bold;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3), 0 0 12px rgba(232, 208, 141, 0.35);
 }
 
 .lang-switch { display: flex; gap: 6px; }
@@ -153,6 +199,68 @@ html, body {
   background: radial-gradient(circle, #b0f0c8 20%, #4ad97e);
   border: 1px solid rgba(0,0,0,0.7); opacity: 0.8;
 }
+
+/* ============ Выпадающее меню «Мобы локации» ============ */
+.panel-section--mobs { position: relative; }
+.l2-btn--mobs {
+  width: 100%; margin-bottom: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: bold;
+}
+.l2-btn--mobs .caret {
+  font-size: 10px; transition: transform .18s ease;
+}
+.l2-btn--mobs .caret::before { content: '▼'; }
+.l2-btn--mobs.is-open .caret { transform: rotate(180deg); }
+.l2-btn--mobs.is-open {
+  color: #1a1408; background: linear-gradient(180deg, #f0d9a0, #cdb26e);
+  border-color: var(--gold-border-hi); text-shadow: none;
+}
+.mob-dropdown {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 1150;
+  background: var(--panel-bg);
+  border: 1px solid var(--gold-border-hi);
+  box-shadow: inset 0 0 0 1px rgba(232, 208, 141, 0.08), 0 10px 28px rgba(0, 0, 0, 0.75);
+  padding: 4px;
+  animation: dropdown-in .16s ease-out;
+}
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+.mob-list {
+  max-height: 300px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.mob-list::-webkit-scrollbar { width: 8px; }
+.mob-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+.mob-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #5a4b31, #3a3223); border: 1px solid #151b21;
+}
+.mob-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 3px 5px; cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color .12s, background .12s;
+}
+.mob-item:hover { border-color: rgba(138, 115, 67, 0.6); background: rgba(232, 208, 141, 0.05); }
+.mob-item.is-active {
+  border-color: var(--gold-border-hi);
+  background: linear-gradient(180deg, rgba(232, 208, 141, 0.18), rgba(232, 208, 141, 0.06));
+}
+.mob-item img {
+  width: 22px; height: 26px; object-fit: contain; flex-shrink: 0;
+  background: #0d1218; border: 1px solid rgba(232, 208, 141, 0.25);
+}
+.mob-item-ph { width: 22px; height: 26px; flex-shrink: 0; background: #141b22; border: 1px solid rgba(232,208,141,0.15); }
+.mob-item-name { flex: 1; font-size: 11.5px; color: var(--text); line-height: 1.2; }
+.mob-item.is-active .mob-item-name { color: var(--gold); }
+.mob-item-lvl { color: var(--text-dim); font-size: 10.5px; }
+.mob-item-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  background: #37a862; border: 1px solid rgba(0,0,0,0.6);
+}
+.mob-item-dot--aggro { background: #c23a3a; }
 
 /* Спавн-точки: большая зона клика, мелкий визуал */
 .spawn-dot-wrap {
@@ -195,47 +303,9 @@ html, body {
   border-color: rgba(127, 212, 255, 0.9);
 }
 
-/* Список мобов в панели */
-.panel-section--list { padding: 8px 10px 0; }
-.panel-section-title {
-  margin: 0 2px 6px; font-size: 10px; font-weight: bold;
-  color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1.2px;
-  border-bottom: 1px solid rgba(90, 75, 49, 0.4); padding-bottom: 3px;
-}
-.mob-list {
-  max-height: 280px; overflow-y: auto;
-  display: flex; flex-direction: column; gap: 2px;
-}
-.mob-list::-webkit-scrollbar { width: 7px; }
-.mob-list::-webkit-scrollbar-thumb { background: #3a3223; border: 2px solid #151b21; }
-.mob-item {
-  display: flex; align-items: center; gap: 7px;
-  padding: 3px 5px; cursor: pointer;
-  border: 1px solid transparent;
-  transition: border-color .12s, background .12s;
-}
-.mob-item:hover { border-color: rgba(138, 115, 67, 0.6); background: rgba(232, 208, 141, 0.05); }
-.mob-item.is-active {
-  border-color: var(--gold-border-hi);
-  background: linear-gradient(180deg, rgba(232, 208, 141, 0.18), rgba(232, 208, 141, 0.06));
-}
-.mob-item img {
-  width: 22px; height: 26px; object-fit: contain; flex-shrink: 0;
-  background: #0d1218; border: 1px solid rgba(232, 208, 141, 0.25);
-}
-.mob-item-ph { width: 22px; height: 26px; flex-shrink: 0; background: #141b22; border: 1px solid rgba(232,208,141,0.15); }
-.mob-item-name { flex: 1; font-size: 11.5px; color: var(--text); line-height: 1.2; }
-.mob-item.is-active .mob-item-name { color: var(--gold); }
-.mob-item-lvl { color: var(--text-dim); font-size: 10.5px; }
-.mob-item-dot {
-  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-  background: #37a862; border: 1px solid rgba(0,0,0,0.6);
-}
-.mob-item-dot--aggro { background: #c23a3a; }
-
 /* Кнопка «Подсветить спавны» в карточке */
 .popup-spawns-btn {
-  display: block; width: calc(100% - 20px); margin: 0 10px 10px;
+  display: block; width: calc(100% - 16px); margin: 0 8px 8px;
 }
 
 /* Тултип спавн-точки */
@@ -305,54 +375,75 @@ html, body {
   to   { box-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 16px rgba(127,212,255,1); }
 }
 
-/* ============ Попапы ============ */
+/* ============ Попапы-карточки ============ */
 .leaflet-popup-content-wrapper {
+  position: relative;
   background: var(--panel-bg);
   border: 1px solid var(--gold-border);
-  box-shadow: inset 0 0 0 1px rgba(232,208,141,0.08), 0 8px 28px rgba(0,0,0,0.7);
+  box-shadow: inset 0 0 0 1px rgba(232,208,141,0.08), 0 10px 32px rgba(0,0,0,0.8);
   border-radius: 0; color: var(--text);
   padding: 0; overflow: hidden;
+  animation: card-in .16s ease-out;
 }
-.leaflet-popup-content { margin: 0; width: auto !important; max-width: min(300px, 82vw); }
+@keyframes card-in {
+  from { transform: scale(0.94); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+/* золотые уголки-завитки по четырём углам карточки */
+.leaflet-popup-content-wrapper::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 10;
+  background:
+    linear-gradient(#e8d08d, #e8d08d) left 4px top 4px / 16px 2px,
+    linear-gradient(#e8d08d, #e8d08d) left 4px top 4px / 2px 16px,
+    linear-gradient(#e8d08d, #e8d08d) right 4px top 4px / 16px 2px,
+    linear-gradient(#e8d08d, #e8d08d) right 4px top 4px / 2px 16px,
+    linear-gradient(#e8d08d, #e8d08d) left 4px bottom 4px / 16px 2px,
+    linear-gradient(#e8d08d, #e8d08d) left 4px bottom 4px / 2px 16px,
+    linear-gradient(#e8d08d, #e8d08d) right 4px bottom 4px / 16px 2px,
+    linear-gradient(#e8d08d, #e8d08d) right 4px bottom 4px / 2px 16px;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+.leaflet-popup-content { margin: 0; width: auto !important; max-width: min(300px, 84vw); }
 .leaflet-popup-tip {
   background: var(--panel-bg); border: 1px solid var(--gold-border);
 }
-.leaflet-popup-close-button { color: var(--gold-dim) !important; z-index: 5; }
+.leaflet-popup-close-button { color: var(--gold-dim) !important; z-index: 11; }
 .leaflet-popup-close-button:hover { color: var(--gold) !important; }
 
-.popup-img {
-  position: relative; height: clamp(130px, 26vh, 185px); overflow: hidden;
-  background: radial-gradient(ellipse at 50% 40%, #1a2430, #0d1218 75%);
-  border-bottom: 1px solid var(--gold-border);
+/* --- Карточка: компактная, почти квадратная --- */
+.popup-card { padding: 6px 14px 0 0; }
+
+.popup-top {
+  display: flex; gap: 10px; padding: 6px 12px 8px; align-items: flex-start;
+}
+.popup-ava {
+  width: 84px; height: 84px; flex-shrink: 0;
+  background: radial-gradient(ellipse at 50% 40%, #1a2430, #0d1218 78%);
+  border: 1px solid var(--gold-border);
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
   display: flex; align-items: center; justify-content: center;
 }
-.popup-img img {
-  max-width: calc(100% - 16px); max-height: calc(100% - 12px);
-  width: auto; height: auto;
-  object-fit: contain; display: block;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+.popup-ava img {
+  max-width: 76px; max-height: 76px; object-fit: contain; display: block;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
 }
-.popup-img::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 46px;
-  background: linear-gradient(180deg, rgba(15,20,25,0), rgba(15,20,25,0.92));
-  pointer-events: none;
-}
-.popup-img img[src=''] { display: none; }
-
-.popup-head {
-  display: flex; align-items: baseline; gap: 8px;
-  padding: 8px 12px 6px; margin-top: -26px; position: relative; z-index: 2;
-}
+.popup-titlebox { flex: 1; min-width: 0; padding-top: 2px; }
 .popup-name {
-  font-size: 14px; font-weight: bold; color: var(--gold);
-  text-shadow: 0 1px 2px #000; flex: 1;
+  display: block; font-family: var(--font-title); font-size: 14px; font-weight: 700;
+  color: var(--gold); text-shadow: 0 1px 2px #000; line-height: 1.25;
 }
-.popup-level { font-size: 12px; color: var(--gold-dim); white-space: nowrap; }
-.popup-level b { color: var(--gold); font-size: 14px; }
+.popup-sub {
+  display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 3px;
+  font-size: 11px; color: var(--text-dim);
+}
+.popup-lvl b { color: var(--text); font-size: 12.5px; }
+.popup-lvl--hi b { color: var(--lvl-hi); text-shadow: 0 0 8px rgba(255, 156, 63, 0.5); }
+.popup-race { opacity: 0.85; }
 
-.popup-badges { padding: 0 12px 8px; display: flex; flex-wrap: wrap; gap: 5px; position: relative; z-index: 2; }
+.popup-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
 .badge {
-  font-size: 10px; letter-spacing: 0.5px; padding: 2px 8px;
+  font-size: 9.5px; letter-spacing: 0.5px; padding: 1.5px 7px;
   border: 1px solid; text-transform: uppercase;
 }
 .badge--aggro { color: #f0908e; border-color: rgba(217,74,74,0.7); background: rgba(217,74,74,0.12); }
@@ -361,40 +452,77 @@ html, body {
 .badge--npc { color: #9ec8ee; border-color: rgba(74,144,217,0.7); background: rgba(74,144,217,0.12); }
 .badge--quest { color: var(--ice); border-color: rgba(127,212,255,0.6); background: rgba(127,212,255,0.1); cursor: default; }
 
-.popup-stats {
-  display: flex; gap: 14px; padding: 6px 12px; margin: 0 10px 8px;
-  background: var(--panel-bg-soft); border: 1px solid rgba(90,75,49,0.4);
-  font-size: 11px; color: var(--text-dim);
+/* HP-полоска как в клиенте */
+.hp-line { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+.hp-bar {
+  flex: 1; height: 9px; max-width: 130px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(232, 208, 141, 0.35);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
 }
-.popup-stats b { color: var(--text); }
+.hp-bar i {
+  display: block; height: 100%;
+  transition: width .3s ease;
+}
+.hp-hi  { background: linear-gradient(180deg, #6fdc8c, #2e9e4e); }
+.hp-mid { background: linear-gradient(180deg, #e8d06a, #b89a2e); }
+.hp-low { background: linear-gradient(180deg, #e8785f, #b03a28); }
+.hp-boss {
+  background: linear-gradient(180deg, #a8e2ff, #4a90d9);
+  box-shadow: 0 0 8px rgba(127, 212, 255, 0.6);
+}
+.hp-val { font-size: 10.5px; color: var(--text-dim); white-space: nowrap; }
+.popup-xp { margin-top: 4px; font-size: 10.5px; color: var(--text-dim); }
+.popup-xp b { color: var(--text); }
 
-.popup-section { padding: 0 12px 8px; }
-.popup-section h4 {
-  margin: 6px 0 4px; font-size: 10px; font-weight: bold;
-  color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1.2px;
+/* Слабости/сопротивления — чипы с иконками */
+.popup-features {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px;
+  padding: 0 12px 6px;
+}
+.popup-features:has(.popup-feature:only-child) { grid-template-columns: 1fr; }
+.popup-feature h4, .popup-col h4 {
+  margin: 4px 0 4px; font-size: 9.5px; font-weight: bold;
+  color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1.1px;
   border-bottom: 1px solid rgba(90,75,49,0.4); padding-bottom: 2px;
 }
+.chip-row { display: flex; flex-direction: column; gap: 3px; }
+.chip {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10.5px; color: var(--text); line-height: 1.25;
+  padding: 2px 4px; background: rgba(22, 29, 36, 0.6);
+  border: 1px solid rgba(90, 75, 49, 0.35);
+}
+.chip img { width: 16px; height: 16px; border: 1px solid rgba(232,208,141,0.25); background: #0d1218; flex-shrink: 0; }
+
+/* Дроп/спойл в две колонки */
+.popup-cols {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px;
+  padding: 0 12px 6px;
+}
+.popup-col { min-width: 0; }
 .popup-row {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 11.5px; padding: 2px 0; line-height: 1.35;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10.5px; padding: 1.5px 0; line-height: 1.3;
   word-break: break-word;
 }
-.popup-row img { width: 20px; height: 20px; border: 1px solid rgba(232,208,141,0.25); background: #0d1218; flex-shrink: 0; }
+.popup-row img { width: 16px; height: 16px; border: 1px solid rgba(232,208,141,0.25); background: #0d1218; flex-shrink: 0; }
 .popup-row .row-icon-ph {
-  width: 20px; height: 20px; flex-shrink: 0;
+  width: 16px; height: 16px; flex-shrink: 0;
   background: linear-gradient(135deg, #2a3440, #171f27);
 }
 .popup-row span { flex: 1; }
+.row-empty { color: var(--text-dim); }
 
 .popup-tip-box {
-  margin: 4px 10px 10px; padding: 7px 9px;
+  margin: 4px 10px 8px; padding: 6px 9px;
   background: rgba(74, 144, 217, 0.07);
   border: 1px solid rgba(74, 144, 217, 0.3);
   border-left: 3px solid var(--blue);
-  font-size: 11.5px; line-height: 1.45; color: #b8c6d4;
+  font-size: 11px; line-height: 1.45; color: #b8c6d4;
 }
 .popup-portal {
-  padding: 12px; font-size: 12px; color: var(--gold-dim); text-align: center; letter-spacing: 0.5px;
+  padding: 12px 16px; font-size: 12px; color: var(--gold-dim); text-align: center; letter-spacing: 0.5px;
 }
 
 /* Временный попап координат */
@@ -403,6 +531,7 @@ html, body {
   padding: 4px 10px; font-size: 12px; color: var(--gold);
   font-family: Consolas, monospace;
 }
+.coords-popup .leaflet-popup-content-wrapper::before { display: none; }
 
 /* ============ Модальные окна ============ */
 .modal-backdrop {
@@ -429,11 +558,15 @@ html, body {
   border-bottom: 1px solid var(--gold-border);
 }
 .modal-header h2 {
-  margin: 0; font-size: 15px; color: var(--gold); text-shadow: 0 1px 2px #000;
+  margin: 0; font-family: var(--font-title); font-size: 16px; font-weight: 700;
+  color: var(--gold); text-shadow: 0 1px 2px #000; letter-spacing: 0.5px;
 }
 .modal-body { padding: 12px 16px 16px; overflow-y: auto; }
-.modal-body::-webkit-scrollbar { width: 8px; }
-.modal-body::-webkit-scrollbar-thumb { background: #3a3223; border: 2px solid #151b21; }
+.modal-body::-webkit-scrollbar { width: 9px; }
+.modal-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+.modal-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #5a4b31, #3a3223); border: 1px solid #151b21; border-radius: 4px;
+}
 
 .quest-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-size: 11.5px; color: var(--text-dim); }
 .quest-meta b { color: var(--text); }
@@ -455,7 +588,8 @@ html, body {
 
 .guide-block { margin-bottom: 14px; }
 .guide-block h3 {
-  margin: 0 0 4px; font-size: 13px; color: var(--gold);
+  margin: 0 0 4px; font-family: var(--font-title); font-size: 13.5px; font-weight: 700;
+  color: var(--gold);
   border-bottom: 1px solid rgba(90,75,49,0.4); padding-bottom: 3px;
 }
 .guide-block p { margin: 0; font-size: 12px; line-height: 1.55; color: var(--text); }
@@ -477,6 +611,7 @@ html, body {
 
 @media (max-width: 640px) {
   #panel { width: 210px; }
-  .leaflet-popup-content { max-width: 76vw; }
-  .popup-stats { flex-wrap: wrap; gap: 6px 10px; }
+  .leaflet-popup-content { max-width: 78vw; }
+  .popup-cols, .popup-features { grid-template-columns: 1fr; }
+  .map-title h1 { font-size: 18px; letter-spacing: 2px; }
 }

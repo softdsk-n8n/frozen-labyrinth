@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frozen Labyrinth — Lineage 2 Interlude</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%237fd4ff'%3E%E2%9D%84%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <link rel="stylesheet" href="styles.css">
@@ -11,9 +15,36 @@
 <body>
   <div id="map"></div>
 
+  <!-- Ледяная виньетка поверх карты -->
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Заголовок поверх карты -->
+  <div class="map-title" aria-hidden="true">
+    <h1>Frozen Labyrinth</h1>
+    <span>Lineage 2 · Interlude</span>
+  </div>
+
+  <!-- Роза ветров -->
+  <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="46" fill="rgba(10,14,19,0.55)" stroke="#5a4b31" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#5a4b31" stroke-width="0.7" opacity="0.7"/>
+    <g fill="#e8d08d">
+      <polygon points="50,8 45,42 50,38 55,42"/>
+      <polygon points="92,50 58,45 62,50 58,55" opacity="0.5"/>
+      <polygon points="50,92 45,58 50,62 55,58" opacity="0.5"/>
+      <polygon points="8,50 42,45 38,50 42,55" opacity="0.5"/>
+    </g>
+    <g fill="#7fd4ff">
+      <polygon points="50,16 47,44 50,41 53,44" opacity="0.9"/>
+    </g>
+    <circle cx="50" cy="50" r="3.2" fill="#e8d08d"/>
+    <text x="50" y="7.5" font-size="9" text-anchor="middle" fill="#e8d08d" font-family="Cinzel, serif">N</text>
+  </svg>
+
   <!-- Снегопад (декоративный) -->
   <div class="snowfall" aria-hidden="true">
     <div class="snow-layer snow-layer--far"></div>
+    <div class="snow-layer snow-layer--mid"></div>
     <div class="snow-layer snow-layer--near"></div>
   </div>
 
@@ -46,9 +77,14 @@
       <button class="l2-btn l2-btn--spawns" id="spawnsBtn" data-i18n="spawnsBtn"></button>
     </section>
 
-    <section class="panel-section panel-section--list">
-      <h3 class="panel-section-title" data-i18n="mobListTitle"></h3>
-      <div id="mobList" class="mob-list"></div>
+    <section class="panel-section panel-section--mobs">
+      <button class="l2-btn l2-btn--mobs" id="mobsToggle">
+        <span data-i18n="mobListTitle"></span>
+        <b class="caret" aria-hidden="true"></b>
+      </button>
+      <div class="mob-dropdown" id="mobDropdown" hidden>
+        <div id="mobList" class="mob-list"></div>
+      </div>
     </section>
 
     <footer class="panel-footer">

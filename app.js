@@ -61,8 +61,36 @@
     });
   }
 
-  function rowsWithIcons(items) {
-    if (!items || !items.length) return '<div class="popup-row"><span style="color:var(--text-dim)">' + esc(t('none')) + '</span></div>';
+  // уровень 60+ — оранжевый, как элитные мобы в игре
+  function lvlHtml(e) {
+    if (!e.level) return '';
+    var hi = e.level >= 60 ? ' popup-lvl--hi' : '';
+    return '<span class="popup-lvl' + hi + '">' + esc(t('level')) + ' <b>' + e.level + '</b></span>';
+  }
+
+  // HP-полоска в стиле клиента: зелёная → жёлтая → красная по величине; босс — ледяная
+  function hpHtml(e) {
+    if (e.type !== 'mob' && e.type !== 'boss') return '';
+    var max = e.type === 'boss' ? 80000 : 2200;
+    var pct = Math.max(5, Math.min(100, Math.round(e.hp / max * 100)));
+    var tone = pct > 60 ? 'hp-hi' : pct > 30 ? 'hp-mid' : 'hp-low';
+    if (e.type === 'boss') tone = 'hp-boss';
+    return '<div class="hp-line">' +
+      '<span class="hp-bar"><i class="' + tone + '" style="width:' + pct + '%"></i></span>' +
+      '<b class="hp-val">' + e.hp.toLocaleString('ru-RU') + '</b></div>';
+  }
+
+  function chipsHtml(list) {
+    return (list || []).map(function (s) {
+      var lang = s[state.lang] != null ? s[state.lang] : s.en;
+      return '<span class="chip" title="' + esc(lang) + '">' +
+        (s.icon ? '<img src="icons/' + esc(s.icon) + '" alt="">' : '') +
+        esc(lang) + '</span>';
+    }).join('');
+  }
+
+  function colRows(items) {
+    if (!items || !items.length) return '<div class="popup-row"><span class="row-empty">' + esc(t('none')) + '</span></div>';
     return items.map(function (it) {
       var lang = it[state.lang] != null ? it[state.lang] : it.en;
       var icon = it.icon
@@ -72,29 +100,9 @@
     }).join('');
   }
 
-  function skillRows(list) {
-    if (!list || !list.length) return '';
-    return list.map(function (s) {
-      return '<div class="popup-row">' +
-        (s.icon ? '<img src="icons/' + esc(s.icon) + '" alt="">' : '<span class="row-icon-ph"></span>') +
-        '<span>' + esc(s[state.lang] || s.en) + '</span></div>';
-    }).join('');
-  }
-
   function popupHtml(e) {
     if (e.type === 'portal') {
       return '<div class="popup-portal">' + esc(e.name[state.lang]) + '</div>';
-    }
-
-    var html = '';
-
-    if (e.img) {
-      html += '<div class="popup-img"><img src="' + esc(e.img) + '" alt=""></div>';
-      html += '<div class="popup-head"><span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
-        '<span class="popup-level">' + esc(t('level')) + ' <b>' + e.level + '</b></span></div>';
-    } else {
-      html += '<div class="popup-head" style="margin-top:0"><span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
-        '<span class="popup-level">' + esc(t('level')) + ' <b>' + e.level + '</b></span></div>';
     }
 
     var badges = '';
@@ -103,24 +111,49 @@
     else if (e.isAggro) badges += '<span class="badge badge--aggro">' + esc(t('aggro')) + '</span>';
     else badges += '<span class="badge badge--passive">' + esc(t('passive')) + '</span>';
     if (e.questMob) badges += '<span class="badge badge--quest" title="' + esc(QUEST.name[state.lang]) + '">' + esc(t('questBadge')) + '</span>';
-    html += '<div class="popup-badges">' + badges + '</div>';
 
-    if (e.type === 'mob' || e.type === 'boss') {
-      html += '<div class="popup-stats"><span>' + esc(t('hp')) + ': <b>' + e.hp.toLocaleString('ru-RU') + '</b></span>' +
-        (e.exp ? '<span>' + esc(t('exp')) + ': <b>' + e.exp.toLocaleString('ru-RU') + '</b></span>' : '') +
-        (e.sp ? '<span>' + esc(t('sp')) + ': <b>' + e.sp + '</b></span>' : '') + '</div>';
+    var ava = e.img
+      ? '<div class="popup-ava"><img src="' + esc(e.img) + '" alt=""></div>'
+      : '';
+
+    var race = e.race && e.race[state.lang]
+      ? '<span class="popup-race">' + esc(e.race[state.lang]) + '</span>' : '';
+
+    var xpLine = '';
+    if (e.type === 'mob' && (e.exp || e.sp)) {
+      xpLine = '<div class="popup-xp">' + esc(t('exp')) + ' <b>' + (e.exp ? e.exp.toLocaleString('ru-RU') : '0') + '</b>';
+      if (e.sp) xpLine += ' · ' + esc(t('sp')) + ' <b>' + e.sp + '</b>';
+      xpLine += '</div>';
     }
 
-    if (e.weakness && e.weakness.length) {
-      html += '<div class="popup-section"><h4>' + esc(t('weakness')) + '</h4>' + skillRows(e.weakness) + '</div>';
+    var html = '<div class="popup-card">' +
+      '<div class="popup-top">' + ava +
+      '<div class="popup-titlebox">' +
+      '<span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
+      '<div class="popup-sub">' + lvlHtml(e) + race + '</div>' +
+      '<div class="popup-badges">' + badges + '</div>' +
+      hpHtml(e) +
+      xpLine +
+      '</div></div>';
+
+    if ((e.weakness && e.weakness.length) || (e.resist && e.resist.length)) {
+      html += '<div class="popup-features">';
+      if (e.weakness && e.weakness.length) {
+        html += '<div class="popup-feature"><h4>' + esc(t('weakness')) + '</h4><div class="chip-row">' + chipsHtml(e.weakness) + '</div></div>';
+      }
+      if (e.resist && e.resist.length) {
+        html += '<div class="popup-feature"><h4>' + esc(t('resist')) + '</h4><div class="chip-row">' + chipsHtml(e.resist) + '</div></div>';
+      }
+      html += '</div>';
     }
-    if (e.resist && e.resist.length) {
-      html += '<div class="popup-section"><h4>' + esc(t('resist')) + '</h4>' + skillRows(e.resist) + '</div>';
-    }
+
     if (e.type === 'mob') {
-      html += '<div class="popup-section"><h4>' + esc(t('drop')) + '</h4>' + rowsWithIcons(e.drop) + '</div>';
-      html += '<div class="popup-section"><h4>' + esc(t('spoil')) + '</h4>' + rowsWithIcons(e.spoil) + '</div>';
+      html += '<div class="popup-cols">' +
+        '<div class="popup-col"><h4>' + esc(t('drop')) + '</h4>' + colRows(e.drop) + '</div>' +
+        '<div class="popup-col"><h4>' + esc(t('spoil')) + '</h4>' + colRows(e.spoil) + '</div>' +
+        '</div>';
     }
+
     if (e.tips) {
       html += '<div class="popup-tip-box">' + esc(e.tips[state.lang]) + '</div>';
     }
@@ -128,6 +161,7 @@
       html += '<button class="l2-btn popup-spawns-btn js-show-spawns" data-npc="' + e.npcId + '">' +
         esc(t('showSpawnsBtn')) + '</button>';
     }
+    html += '</div>';
     return html;
   }
 
@@ -161,7 +195,8 @@
       e.spawnPoints.forEach(function (p) {
         var icon = L.divIcon({
           className: wrapCls,
-          html: '<span class="spawn-dot spawn-dot--' + kind + '"></span>',
+          html: '<span class="spawn-dot spawn-dot--' + kind + '" role="button" tabindex="-1" aria-label="' +
+            esc(e.name[state.lang]) + '"></span>',
           iconSize: [22, 22],
           iconAnchor: [11, 11],
         });
@@ -185,6 +220,7 @@
         map.flyToBounds(bounds.pad(0.25), { maxZoom: 1.5, duration: 0.8 });
       }
     }
+    setMobDropdown(false); // выбрали — закрываем список, чтобы видеть карту
     rebuildSpawnDots();
     renderMobList();
   }
@@ -310,6 +346,24 @@
     });
   }
 
+  // ============ Выпадающее меню «Мобы локации» ============
+  var mobsToggle = document.getElementById('mobsToggle');
+  var mobDropdown = document.getElementById('mobDropdown');
+
+  function setMobDropdown(open) {
+    mobDropdown.hidden = !open;
+    mobsToggle.classList.toggle('is-open', open);
+  }
+  mobsToggle.addEventListener('click', function (ev) {
+    ev.stopPropagation();
+    setMobDropdown(mobDropdown.hidden);
+  });
+  document.addEventListener('click', function (ev) {
+    if (!mobDropdown.hidden && !mobDropdown.contains(ev.target) && ev.target !== mobsToggle) {
+      setMobDropdown(false);
+    }
+  });
+
   // кнопка «Подсветить спавны» в карточке моба
   map.on('popupopen', function (ev) {
     var btn = ev.popup.getElement() && ev.popup.getElement().querySelector('.js-show-spawns');
@@ -381,6 +435,7 @@
     if (ev.key === 'Escape') {
       document.getElementById('questModal').hidden = true;
       document.getElementById('guideModal').hidden = true;
+      setMobDropdown(false);
     }
   });
 
@@ -397,4 +452,20 @@
     return div;
   };
   legend.addTo(map);
+
+  // dev-хук: доступ к карте из консоли (координаты, программный выбор моба)
+  window.__fl = {
+    map: map,
+    select: function (npcId) { selectMob(npcId); },
+    openCard: function (npcId) {
+      var e = ENTITIES.find(function (x) { return x.npcId === npcId; });
+      if (e && e.spawnPoints && e.spawnPoints.length) {
+        var center = e.spawnPoints[Math.floor(e.spawnPoints.length / 2)];
+        L.popup({ maxWidth: 300, minWidth: 230, keepInView: true, autoPanPadding: [24, 24] })
+          .setLatLng(center)
+          .setContent(popupHtml(e))
+          .openOn(map);
+      }
+    },
+  };
 })();

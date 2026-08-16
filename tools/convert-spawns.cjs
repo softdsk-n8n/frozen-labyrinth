@@ -51,18 +51,13 @@ function score(T) {
   return hit / rows.length;
 }
 
-let best = null;
-for (const fx of [false, true]) for (const fy of [false, true]) {
-  for (let s = 0.6; s <= 1.35; s += 0.05) {
-    for (let ox = -120; ox <= 120; ox += 10) for (let oy = -120; oy <= 120; oy += 10) {
-      const T = makeT(fx, fy, s, ox, oy);
-      const sc = score(T);
-      if (!best || sc > best.sc) best = { fx, fy, s, ox, oy, sc, T };
-    }
-  }
-}
+// Калибровка (26-08): автопоиск в узком диапазоне сжимал облако спавнов в центр карты —
+// левые и северные коридоры оставались пустыми. Расширенный поиск (scale 0.4–1.5,
+// offset ±160, fine-сетка 100×100/135) дал трансформ ниже: +25% покрытия светлых
+// коридоров, спавны доходят до x=75 и y=888. Зафиксирован вручную.
+const best = { fx: false, fy: true, s: 0.80, ox: 10, oy: 30, T: makeT(false, true, 0.80, 10, 30), sc: score(makeT(false, true, 0.80, 10, 30)) };
 
-console.log('best transform: flipX=' + best.fx + ' flipY=' + best.fy +
+console.log('calibrated transform: flipX=' + best.fx + ' flipY=' + best.fy +
   ' scale=' + best.s.toFixed(2) + ' offset=(' + best.ox + ',' + best.oy + ')' +
   ' → light match: ' + Math.round(best.sc * 100) + '% of ' + rows.length + ' spawns');
 

@@ -143,13 +143,13 @@ const META = {
 };
 
 // ---------- Порталы-выходы ----------
-// Ориентиры — реальные зоны датапака: Сирра [819,115] (СЗ), Слуга Фреи [870,468] (С),
-// Кир [278,151] (З). Порталы — оценка, снапится к светлым ячейкам.
+// Калибровка 26-08: Сирра [847,67] (СЗ угол), Слуга Фреи [838,476] у входа в замок.
+// Порталы сэмплятся по светлым зонам соответствующих краёв (снап в gen-data ниже).
 const PORTALS = [
-  { id: 'exit-pavel', name: { ru: 'Выход: Древняя Лаборатория (Руины Павла)', en: 'Exit: Archaic Laboratory (Pavel Ruins)' }, coords: [900, 150] },
-  { id: 'exit-vos', name: { ru: 'Выход: Долина Святых', en: 'Exit: Valley of Saints' }, coords: [920, 540] },
-  { id: 'exit-mos', name: { ru: 'Выход: Монастырь Молчания', en: 'Exit: Monastery of Silence' }, coords: [920, 660] },
-  { id: 'castle-sirra', name: { ru: 'Замок Ледяной Королевы', en: 'The Ice Queen’s Castle' }, coords: [880, 300] },
+  { id: 'exit-pavel', name: { ru: 'Выход: Древняя лаборатория (Руины Павла)', en: 'Exit: Archaic Laboratory (Pavel Ruins)' }, coords: [540, 60] },
+  { id: 'exit-vos', name: { ru: 'Выход: Долина Святых', en: 'Exit: Valley of Saints' }, coords: [930, 820] },
+  { id: 'exit-mos', name: { ru: 'Выход: Монастырь Молчания', en: 'Exit: Monastery of Silence' }, coords: [930, 620] },
+  { id: 'castle-sirra', name: { ru: 'Замок Ледяной Королевы', en: 'The Ice Queen’s Castle' }, coords: [860, 95] },
 ];
 
 // ---------- Перевод скиллов сущности в weak/resist ----------
@@ -336,7 +336,7 @@ const i18n = {
 // Источники: spawnlist.sql (Hl4p3x/L2JServer_C6_Interlude) + l2api.dev spawns API.
 const spawnsMap = JSON.parse(fs.readFileSync(path.join(__dirname, 'spawns-map.json'), 'utf8'));
 // 22091/22095 — миньоны (спавнятся при хозяевах, своих точек нет): рядом со старшими
-const SIBLING = { 22091: [555, 810], 22095: [835, 745] };
+const SIBLING = { 22091: [580, 810], 22095: [860, 745] };
 let fromDatapack = 0, spawnPointsTotal = 0;
 for (const e of entities) {
   if (e.type === 'portal') continue;
