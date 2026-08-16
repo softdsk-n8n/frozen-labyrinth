@@ -201,9 +201,8 @@
       var tip = '<b>' + esc(e.name[state.lang]) + '</b> · ' + esc(t('level')) + ' ' + e.level;
       e.spawnPoints.forEach(function (p) {
         var icon = L.divIcon({
-          className: wrapCls,
-          html: '<span class="spawn-dot spawn-dot--' + kind + '" role="button" tabindex="-1" aria-label="' +
-            esc(e.name[state.lang]) + '"></span>',
+          className: wrapCls + ' fl-dot',
+          html: '<span class="spawn-dot spawn-dot--' + kind + '" aria-hidden="true"></span>',
           iconSize: [22, 22],
           iconAnchor: [11, 11],
         });
@@ -265,6 +264,7 @@
     qb.classList.toggle('is-active', state.questHighlight);
     document.getElementById('spawnsBtn').classList.toggle('is-active', state.showSpawns);
     renderMusicBtn();
+    renderLegend(); // легенда внизу слева — тоже на новом языке
     renderQuestModal();
     renderGuideModal();
     // переоткрыть текущий попап на новом языке
@@ -518,15 +518,20 @@
 
   // ============ Легенда ============
   var legend = L.control({ position: 'bottomleft' });
-  legend.onAdd = function () {
-    var div = L.DomUtil.create('div', 'l2-panel legend');
-    div.innerHTML =
+  var legendEl = null;
+  function renderLegend() {
+    if (!legendEl) return;
+    legendEl.innerHTML =
       '<div class="legend-row"><span class="legend-dot" style="background:#4a90d9"></span>' + esc(APP.i18n.filterNpc[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot" style="background:#d94a4a"></span>' + esc(APP.i18n.filterAggro[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot" style="background:#4ad97e"></span>' + esc(APP.i18n.filterPassive[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot" style="background:#b44ae0;border-color:#7fd4ff"></span>' + esc(APP.i18n.raidBoss[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot spawn-dot-demo"></span>' + esc(APP.i18n.spawnsBtn[state.lang]) + '</div>';
-    return div;
+  }
+  legend.onAdd = function () {
+    legendEl = L.DomUtil.create('div', 'l2-panel legend');
+    renderLegend();
+    return legendEl;
   };
   legend.addTo(map);
 
