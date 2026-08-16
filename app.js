@@ -233,18 +233,13 @@
   }
 
   function applyFilter() {
-    var visible = 0;
     ENTITIES.forEach(function (e) {
-      if (e.type === 'mob') {
-        if (isVisible(e) && e.spawnPoints && e.spawnPoints.length) visible++;
-        return;
-      }
+      if (e.type === 'mob') return;
       var m = markers[e.id];
       if (!m) return;
-      if (isVisible(e)) { if (!map.hasLayer(m)) m.addTo(map); visible++; }
+      if (isVisible(e)) { if (!map.hasLayer(m)) m.addTo(map); }
       else if (map.hasLayer(m)) map.removeLayer(m);
     });
-    document.getElementById('markerCount').textContent = visible;
     rebuildSpawnDots();
   }
 
@@ -431,7 +426,10 @@
   document.getElementById('spawnsBtn').addEventListener('click', function () {
     state.showSpawns = !state.showSpawns;
     localStorage.setItem('fl-spawns', state.showSpawns ? 'on' : 'off');
+    // выключили слой — сбрасываем выбор, чтобы после включения вернулись ВСЕ точки
+    if (!state.showSpawns) state.selectedMob = null;
     rebuildSpawnDots();
+    renderMobList();
     renderPanel();
   });
 
