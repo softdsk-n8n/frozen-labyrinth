@@ -27,10 +27,12 @@
     zoomDelta: 0.5,
     zoomControl: true,
     attributionControl: false,
+    // жёсткие границы: вид не «отбрасывает» пружиной при зуме/панораме у края
+    maxBounds: [[-60, -60], [1060, 1060]],
+    maxBoundsViscosity: 1.0,
   });
   L.imageOverlay('labyrinth_map.png', BOUNDS).addTo(map);
   map.fitBounds(BOUNDS);
-  map.setMaxBounds([[-120, -120], [1120, 1120]]);
 
   // ============ Маркеры ============
   var markers = {}; // id -> L.Marker

@@ -637,8 +637,50 @@ html, body {
 .leaflet-bar a:hover { color: var(--gold) !important; }
 
 @media (max-width: 640px) {
-  #panel { width: 210px; }
-  .leaflet-popup-content { max-width: 78vw; }
-  .popup-cols, .popup-features { grid-template-columns: 1fr; }
-  .map-title h1 { font-size: 18px; letter-spacing: 2px; }
+  /* панель — нижняя шторка на всю ширину */
+  #panel {
+    top: auto; bottom: 0; left: 0; right: 0;
+    width: auto; max-height: 54vh; overflow-y: auto;
+    border-left: none; border-right: none; border-bottom: none;
+    padding-bottom: 4px;
+  }
+  #panel::-webkit-scrollbar { width: 6px; }
+  #panel::-webkit-scrollbar-thumb { background: #3a3223; }
+  .panel-header { padding: 8px 12px 6px; position: sticky; top: 0; z-index: 5; background: var(--panel-bg); }
+  .panel-title { font-size: 12px; }
+  .panel-footer { display: none; }
+  .coords-hint { display: none; }
+
+  /* крупные тап-таргеты */
+  .l2-btn { padding: 9px 12px; font-size: 13px; }
+  .panel-section { padding: 6px 12px 0; }
+  .panel-section .l2-btn--quest,
+  .panel-section .l2-btn--guide,
+  .panel-section .l2-btn--spawns { margin-bottom: 6px; }
+
+  /* дропдаун открывается вверх */
+  .mob-dropdown { top: auto; bottom: calc(100% + 4px); }
+  .mob-list { max-height: 240px; }
+  .mob-item { padding: 6px 6px; }
+  .mob-item img { width: 26px; height: 30px; }
+  .mob-item-name { font-size: 13px; }
+
+  /* декор компактнее */
+  .map-title { top: 8px; }
+  .map-title h1 { font-size: 17px; letter-spacing: 2px; }
+  .map-title span { font-size: 8px; letter-spacing: 3px; }
+  .compass { display: none; }
+  .legend {
+    left: 8px; bottom: auto; top: 96px;
+    padding: 6px 8px; font-size: 10px;
+  }
+  .legend-row { padding: 1px 0; }
+
+  /* карточка — во всю ширину минус поля */
+  .leaflet-popup-content { width: min(84vw, 300px) !important; }
+  .popup-banner { height: clamp(84px, 18vh, 110px); }
+  .hp-bar { width: 96px; }
+
+  /* зум-кнопки крупнее */
+  .leaflet-bar a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 18px !important; }
 }
