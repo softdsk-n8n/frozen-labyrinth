@@ -146,10 +146,10 @@ const META = {
 // Калибровка 26-08: Сирра [847,67] (СЗ угол), Слуга Фреи [838,476] у входа в замок.
 // Порталы сэмплятся по светлым зонам соответствующих краёв (снап в gen-data ниже).
 const PORTALS = [
-  { id: 'exit-pavel', name: { ru: 'Выход: Древняя лаборатория (Руины Павла)', en: 'Exit: Archaic Laboratory (Pavel Ruins)' }, coords: [525, 85] },
-  { id: 'exit-vos', name: { ru: 'Выход: Долина Святых', en: 'Exit: Valley of Saints' }, coords: [825, 765] },
-  { id: 'exit-mos', name: { ru: 'Выход: Монастырь Молчания', en: 'Exit: Monastery of Silence' }, coords: [885, 645] },
-  { id: 'castle-sirra', name: { ru: 'Замок Ледяной Королевы', en: 'The Ice Queen’s Castle' }, coords: [805, 135] },
+  { id: 'exit-pavel', name: { ru: 'Выход: Древняя лаборатория (Руины Павла)', en: 'Exit: Archaic Laboratory (Pavel Ruins)' }, coords: [465, 55] },
+  { id: 'exit-vos', name: { ru: 'Выход: Долина Святых', en: 'Exit: Valley of Saints' }, coords: [915, 845] },
+  { id: 'exit-mos', name: { ru: 'Выход: Монастырь Молчания', en: 'Exit: Monastery of Silence' }, coords: [915, 585] },
+  { id: 'castle-sirra', name: { ru: 'Замок Ледяной Королевы', en: 'The Ice Queen’s Castle' }, coords: [915, 705] },
 ];
 
 // ---------- Перевод скиллов сущности в weak/resist ----------

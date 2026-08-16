@@ -42,10 +42,16 @@ html, body {
 .leaflet-image-layer {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  -webkit-mask-image: radial-gradient(closest-side at 50% 50%,
-    #000 78%, rgba(0, 0, 0, 0.8) 90%, rgba(0, 0, 0, 0.35) 97%, transparent 100%);
-  mask-image: radial-gradient(closest-side at 50% 50%,
-    #000 78%, rgba(0, 0, 0, 0.8) 90%, rgba(0, 0, 0, 0.35) 97%, transparent 100%);
+  /* прямоугольная растушёвка: тает только ~7% у краёв, вся карта до кончиков
+     коридоров видна (круглая маска прятала северо-восточные выходы) */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-composite: intersect;
 }
 .leaflet-container { background: transparent; }
 

@@ -3986,7 +3986,7 @@ const APP = {
       "drop": [],
       "spoil": [],
       "coords": [
-        510,
+        470,
         70
       ],
       "img": null,
@@ -4012,8 +4012,8 @@ const APP = {
       "drop": [],
       "spoil": [],
       "coords": [
-        830,
-        750
+        910,
+        850
       ],
       "img": null,
       "questMob": false,
@@ -4038,8 +4038,8 @@ const APP = {
       "drop": [],
       "spoil": [],
       "coords": [
-        890,
-        650
+        910,
+        590
       ],
       "img": null,
       "questMob": false,
@@ -4064,8 +4064,8 @@ const APP = {
       "drop": [],
       "spoil": [],
       "coords": [
-        810,
-        130
+        910,
+        710
       ],
       "img": null,
       "questMob": false,
