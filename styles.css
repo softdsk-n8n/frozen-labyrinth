@@ -305,7 +305,7 @@ html, body {
 
 /* Кнопка «Подсветить спавны» в карточке */
 .popup-spawns-btn {
-  display: block; width: calc(100% - 16px); margin: 0 8px 8px;
+  display: block; width: calc(100% - 20px); margin: 0 10px 8px;
 }
 
 /* Тултип спавн-точки */
@@ -408,40 +408,47 @@ html, body {
 .leaflet-popup-tip {
   background: var(--panel-bg); border: 1px solid var(--gold-border);
 }
-.leaflet-popup-close-button { color: var(--gold-dim) !important; z-index: 11; }
+.leaflet-popup-close-button { color: var(--gold-dim) !important; z-index: 11; text-shadow: 0 1px 3px #000, 0 0 5px #000; }
 .leaflet-popup-close-button:hover { color: var(--gold) !important; }
 
-/* --- Карточка: компактная, почти квадратная --- */
-.popup-card { padding: 6px 14px 0 0; }
+/* --- Карточка: баннер сверху, компактная --- */
+.popup-card { padding-bottom: 2px; }
 
-.popup-top {
-  display: flex; gap: 10px; padding: 6px 12px 8px; align-items: flex-start;
-}
-.popup-ava {
-  width: 84px; height: 84px; flex-shrink: 0;
-  background: radial-gradient(ellipse at 50% 40%, #1a2430, #0d1218 78%);
-  border: 1px solid var(--gold-border);
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
+.popup-banner {
+  position: relative; height: clamp(88px, 19vh, 112px); overflow: hidden;
+  background: radial-gradient(ellipse at 50% 38%, #1a2430, #0d1218 78%);
+  border-bottom: 1px solid var(--gold-border);
   display: flex; align-items: center; justify-content: center;
 }
-.popup-ava img {
-  max-width: 76px; max-height: 76px; object-fit: contain; display: block;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+.popup-banner img {
+  max-width: calc(100% - 20px); max-height: calc(100% - 8px);
+  object-fit: contain; display: block;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.65));
 }
-.popup-titlebox { flex: 1; min-width: 0; padding-top: 2px; }
+.popup-banner::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 44px;
+  background: linear-gradient(180deg, rgba(15,20,25,0), rgba(15,20,25,0.94));
+  pointer-events: none;
+}
+.popup-banner-name {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 5px 10px 6px;
+}
+.popup-headrow {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 8px 10px 0;
+}
 .popup-name {
-  display: block; font-family: var(--font-title); font-size: 14px; font-weight: 700;
-  color: var(--gold); text-shadow: 0 1px 2px #000; line-height: 1.25;
+  font-family: var(--font-title); font-size: 13.5px; font-weight: 700;
+  color: var(--gold); text-shadow: 0 1px 3px #000; line-height: 1.25;
+  min-width: 0;
 }
-.popup-sub {
-  display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 3px;
-  font-size: 11px; color: var(--text-dim);
-}
+.popup-lvl { font-size: 10.5px; color: var(--text-dim); white-space: nowrap; flex-shrink: 0; }
 .popup-lvl b { color: var(--text); font-size: 12.5px; }
 .popup-lvl--hi b { color: var(--lvl-hi); text-shadow: 0 0 8px rgba(255, 156, 63, 0.5); }
-.popup-race { opacity: 0.85; }
 
-.popup-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.popup-badges { padding: 5px 10px 0; display: flex; flex-wrap: wrap; gap: 4px; }
 .badge {
   font-size: 9.5px; letter-spacing: 0.5px; padding: 1.5px 7px;
   border: 1px solid; text-transform: uppercase;
@@ -451,19 +458,21 @@ html, body {
 .badge--boss { color: #e0b8ff; border-color: rgba(180,74,224,0.7); background: rgba(180,74,224,0.14); }
 .badge--npc { color: #9ec8ee; border-color: rgba(74,144,217,0.7); background: rgba(74,144,217,0.12); }
 .badge--quest { color: var(--ice); border-color: rgba(127,212,255,0.6); background: rgba(127,212,255,0.1); cursor: default; }
+.badge--race { color: var(--text-dim); border-color: rgba(141,132,112,0.5); background: rgba(141,132,112,0.08); }
 
-/* HP-полоска как в клиенте */
-.hp-line { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+/* строка HP + EXP/SP — в один ряд */
+.popup-statline {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 1px; flex-wrap: wrap;
+}
 .hp-bar {
-  flex: 1; height: 9px; max-width: 130px;
+  display: inline-block; width: 118px; height: 9px; flex-shrink: 0;
   background: rgba(0, 0, 0, 0.65);
   border: 1px solid rgba(232, 208, 141, 0.35);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+  vertical-align: middle;
 }
-.hp-bar i {
-  display: block; height: 100%;
-  transition: width .3s ease;
-}
+.hp-bar i { display: block; height: 100%; transition: width .3s ease; }
 .hp-hi  { background: linear-gradient(180deg, #6fdc8c, #2e9e4e); }
 .hp-mid { background: linear-gradient(180deg, #e8d06a, #b89a2e); }
 .hp-low { background: linear-gradient(180deg, #e8785f, #b03a28); }
@@ -472,13 +481,13 @@ html, body {
   box-shadow: 0 0 8px rgba(127, 212, 255, 0.6);
 }
 .hp-val { font-size: 10.5px; color: var(--text-dim); white-space: nowrap; }
-.popup-xp { margin-top: 4px; font-size: 10.5px; color: var(--text-dim); }
+.popup-xp { margin-left: auto; font-size: 10.5px; color: var(--text-dim); white-space: nowrap; }
 .popup-xp b { color: var(--text); }
 
 /* Слабости/сопротивления — чипы с иконками */
 .popup-features {
   display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px;
-  padding: 0 12px 6px;
+  padding: 3px 10px 2px;
 }
 .popup-features:has(.popup-feature:only-child) { grid-template-columns: 1fr; }
 .popup-feature h4, .popup-col h4 {
@@ -498,7 +507,7 @@ html, body {
 /* Дроп/спойл в две колонки */
 .popup-cols {
   display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px;
-  padding: 0 12px 6px;
+  padding: 0 10px 4px;
 }
 .popup-col { min-width: 0; }
 .popup-row {
@@ -515,11 +524,11 @@ html, body {
 .row-empty { color: var(--text-dim); }
 
 .popup-tip-box {
-  margin: 4px 10px 8px; padding: 6px 9px;
+  margin: 2px 10px 6px; padding: 5px 9px;
   background: rgba(74, 144, 217, 0.07);
   border: 1px solid rgba(74, 144, 217, 0.3);
   border-left: 3px solid var(--blue);
-  font-size: 11px; line-height: 1.45; color: #b8c6d4;
+  font-size: 11px; line-height: 1.4; color: #b8c6d4;
 }
 .popup-portal {
   padding: 12px 16px; font-size: 12px; color: var(--gold-dim); text-align: center; letter-spacing: 0.5px;

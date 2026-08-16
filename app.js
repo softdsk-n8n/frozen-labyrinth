@@ -75,9 +75,15 @@
     var pct = Math.max(5, Math.min(100, Math.round(e.hp / max * 100)));
     var tone = pct > 60 ? 'hp-hi' : pct > 30 ? 'hp-mid' : 'hp-low';
     if (e.type === 'boss') tone = 'hp-boss';
-    return '<div class="hp-line">' +
-      '<span class="hp-bar"><i class="' + tone + '" style="width:' + pct + '%"></i></span>' +
-      '<b class="hp-val">' + e.hp.toLocaleString('ru-RU') + '</b></div>';
+    return '<span class="hp-bar"><i class="' + tone + '" style="width:' + pct + '%"></i></span>' +
+      '<b class="hp-val">' + e.hp.toLocaleString('ru-RU') + '</b>';
+  }
+
+  function xpHtml(e) {
+    if (e.type !== 'mob' || (!e.exp && !e.sp)) return '';
+    var html = '<span class="popup-xp">' + esc(t('exp')) + ' <b>' + (e.exp ? e.exp.toLocaleString('ru-RU') : '0') + '</b>';
+    if (e.sp) html += ' · ' + esc(t('sp')) + ' <b>' + e.sp + '</b>';
+    return html + '</span>';
   }
 
   function chipsHtml(list) {
@@ -111,30 +117,25 @@
     else if (e.isAggro) badges += '<span class="badge badge--aggro">' + esc(t('aggro')) + '</span>';
     else badges += '<span class="badge badge--passive">' + esc(t('passive')) + '</span>';
     if (e.questMob) badges += '<span class="badge badge--quest" title="' + esc(QUEST.name[state.lang]) + '">' + esc(t('questBadge')) + '</span>';
+    if (e.race && e.race[state.lang]) badges += '<span class="badge badge--race">' + esc(e.race[state.lang]) + '</span>';
 
-    var ava = e.img
-      ? '<div class="popup-ava"><img src="' + esc(e.img) + '" alt=""></div>'
-      : '';
-
-    var race = e.race && e.race[state.lang]
-      ? '<span class="popup-race">' + esc(e.race[state.lang]) + '</span>' : '';
-
-    var xpLine = '';
-    if (e.type === 'mob' && (e.exp || e.sp)) {
-      xpLine = '<div class="popup-xp">' + esc(t('exp')) + ' <b>' + (e.exp ? e.exp.toLocaleString('ru-RU') : '0') + '</b>';
-      if (e.sp) xpLine += ' · ' + esc(t('sp')) + ' <b>' + e.sp + '</b>';
-      xpLine += '</div>';
+    // шапка: картинка баннером сверху (или строка, если картинки нет)
+    var head;
+    if (e.img) {
+      head = '<div class="popup-banner"><img src="' + esc(e.img) + '" alt="">' +
+        '<div class="popup-banner-name"><span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
+        lvlHtml(e) + '</div></div>';
+    } else {
+      head = '<div class="popup-headrow"><span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
+        lvlHtml(e) + '</div>';
     }
 
-    var html = '<div class="popup-card">' +
-      '<div class="popup-top">' + ava +
-      '<div class="popup-titlebox">' +
-      '<span class="popup-name">' + esc(e.name[state.lang]) + '</span>' +
-      '<div class="popup-sub">' + lvlHtml(e) + race + '</div>' +
+    var statLine = (e.type === 'mob' || e.type === 'boss')
+      ? '<div class="popup-statline">' + hpHtml(e) + xpHtml(e) + '</div>' : '';
+
+    var html = '<div class="popup-card">' + head +
       '<div class="popup-badges">' + badges + '</div>' +
-      hpHtml(e) +
-      xpLine +
-      '</div></div>';
+      statLine;
 
     if ((e.weakness && e.weakness.length) || (e.resist && e.resist.length)) {
       html += '<div class="popup-features">';
