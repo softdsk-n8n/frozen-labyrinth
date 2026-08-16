@@ -295,11 +295,7 @@ html, body {
   color: #0a2416; background: linear-gradient(180deg, #a8e8c2, #6bbd8e); border-color: #6bb88e;
 }
 
-.legend-row .spawn-dot-demo {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: radial-gradient(circle, #b0f0c8 20%, #4ad97e);
-  border: 1px solid rgba(0,0,0,0.7); opacity: 0.8;
-}
+.legend-row .spawn-dot-demo { display: none; }
 
 /* ============ Выпадающее меню «Мобы локации» ============ */
 .panel-section--mobs { position: relative; }

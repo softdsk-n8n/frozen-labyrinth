@@ -525,8 +525,7 @@
       '<div class="legend-row"><span class="legend-dot" style="background:#4a90d9"></span>' + esc(APP.i18n.filterNpc[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot" style="background:#d94a4a"></span>' + esc(APP.i18n.filterAggro[state.lang]) + '</div>' +
       '<div class="legend-row"><span class="legend-dot" style="background:#4ad97e"></span>' + esc(APP.i18n.filterPassive[state.lang]) + '</div>' +
-      '<div class="legend-row"><span class="legend-dot" style="background:#b44ae0;border-color:#7fd4ff"></span>' + esc(APP.i18n.raidBoss[state.lang]) + '</div>' +
-      '<div class="legend-row"><span class="legend-dot spawn-dot-demo"></span>' + esc(APP.i18n.spawnsBtn[state.lang]) + '</div>';
+      '<div class="legend-row"><span class="legend-dot" style="background:#b44ae0;border-color:#7fd4ff"></span>' + esc(APP.i18n.raidBoss[state.lang]) + '</div>';
   }
   legend.onAdd = function () {
     legendEl = L.DomUtil.create('div', 'l2-panel legend');
