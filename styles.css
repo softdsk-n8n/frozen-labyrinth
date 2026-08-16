@@ -89,6 +89,12 @@ html, body {
   50%  { transform: translate3d(5%, 3%, 0) skewX(6deg) scaleY(1.18); opacity: 1; }
   100% { transform: translate3d(-3%, -6%, 0) skewX(-4deg) scaleY(.9); opacity: .75; }
 }
+/* оттенки сияния медленно плывут по спектру */
+.aurora { animation: aurora-hue 46s linear infinite alternate; }
+@keyframes aurora-hue {
+  from { filter: hue-rotate(0deg); }
+  to   { filter: hue-rotate(18deg); }
+}
 
 /* ============ Морозный туман у подножия ============ */
 .mist {
@@ -125,6 +131,11 @@ html, body {
   background:
     radial-gradient(ellipse at center, transparent 52%, rgba(96, 176, 224, 0.10) 76%, rgba(24, 68, 108, 0.30) 100%),
     linear-gradient(180deg, rgba(127, 212, 255, 0.05), transparent 12%, transparent 88%, rgba(127, 212, 255, 0.06));
+  animation: vig-breathe 14s ease-in-out infinite alternate; /* виньетка «дышит» */
+}
+@keyframes vig-breathe {
+  from { opacity: 0.86; }
+  to   { opacity: 1; }
 }
 
 /* ============ Заголовок поверх карты ============ */
@@ -146,6 +157,56 @@ html, body {
   font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
   color: rgba(232, 208, 141, 0.8);
 }
+/* морозное свечение заголовка пульсирует */
+.map-title h1 {
+  animation: title-glow 7s ease-in-out infinite alternate;
+}
+@keyframes title-glow {
+  from { filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 14px rgba(127, 212, 255, 0.16)); }
+  to   { filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 26px rgba(127, 212, 255, 0.42)); }
+}
+
+/* ============ Ледяная комета: редко прочерчивает небо ============ */
+.comet {
+  position: fixed; top: 7%; left: -14%;
+  width: 150px; height: 2px; z-index: 445; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(190, 235, 255, 0.95));
+  border-radius: 2px;
+  filter: drop-shadow(0 0 6px rgba(160, 220, 255, 0.85));
+  opacity: 0;
+  transform: rotate(12deg);
+  animation: comet-fly 15s linear infinite;
+}
+@keyframes comet-fly {
+  0%, 86%  { transform: translateX(0) translateY(0) rotate(12deg); opacity: 0; }
+  88%      { opacity: 1; }
+  99%      { opacity: 1; }
+  100%     { transform: translateX(125vw) translateY(24vh) rotate(12deg); opacity: 0; }
+}
+
+/* ============ Ледяные искры: всплывают снизу ============ */
+.motes {
+  position: fixed; inset: 0; z-index: 446; pointer-events: none; overflow: hidden;
+}
+.motes i {
+  position: absolute; bottom: -14px; width: 5px; height: 5px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(190, 235, 255, 0.95), rgba(140, 200, 255, 0.25) 60%, transparent 72%);
+  box-shadow: 0 0 8px rgba(160, 220, 255, 0.8);
+  opacity: 0;
+  animation: mote-rise 17s ease-in infinite;
+}
+.motes i:nth-child(1) { left: 12%; animation-duration: 15s; }
+.motes i:nth-child(2) { left: 27%; animation-duration: 20s; animation-delay: -6s; width: 4px; height: 4px; }
+.motes i:nth-child(3) { left: 45%; animation-duration: 17s; animation-delay: -11s; }
+.motes i:nth-child(4) { left: 62%; animation-duration: 22s; animation-delay: -3s; width: 3px; height: 3px; }
+.motes i:nth-child(5) { left: 78%; animation-duration: 18s; animation-delay: -9s; }
+.motes i:nth-child(6) { left: 91%; animation-duration: 16s; animation-delay: -13s; width: 4px; height: 4px; }
+@keyframes mote-rise {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  8%   { opacity: 0.75; }
+  55%  { opacity: 0.45; }
+  100% { transform: translateY(-88vh) translateX(26px); opacity: 0; }
+}
 
 /* ============ Роза ветров ============ */
 .compass {
@@ -158,6 +219,11 @@ html, body {
 .snowfall {
   position: fixed; inset: 0; z-index: 450; pointer-events: none; overflow: hidden;
   opacity: 0.55;
+  animation: snow-sway 33s ease-in-out infinite alternate; /* ветер покачивает снег */
+}
+@keyframes snow-sway {
+  from { transform: translateX(-14px); }
+  to   { transform: translateX(14px); }
 }
 .snow-layer {
   position: absolute; inset: -100% 0 0 0;
@@ -459,14 +525,6 @@ html, body {
   100% { transform: scale(2.2); opacity: 0; }
 }
 
-.l2-marker--portal {
-  width: 15px; height: 15px; border-radius: 2px; transform: rotate(45deg);
-  border: 2px solid var(--gold);
-  background: linear-gradient(135deg, #3a4c60, #1c2836);
-  box-shadow: 0 0 8px rgba(232, 208, 141, 0.4);
-}
-.l2-marker--portal:hover { transform: rotate(45deg) scale(1.3); }
-
 /* Подсветка квестовых мобов */
 .l2-marker--quest-hl {
   outline: 2px solid var(--ice);
@@ -513,7 +571,6 @@ html, body {
   width: min(272px, 84vw) !important;
   box-sizing: border-box;
 }
-.portal-popup .leaflet-popup-content { width: auto !important; }
 .leaflet-popup-tip {
   background: var(--panel-bg); border: 1px solid var(--gold-border);
 }
@@ -622,9 +679,6 @@ html, body {
   border: 1px solid rgba(74, 144, 217, 0.3);
   border-left: 3px solid var(--blue);
   font-size: 11px; line-height: 1.4; color: #b8c6d4;
-}
-.popup-portal {
-  padding: 12px 16px; font-size: 12px; color: var(--gold-dim); text-align: center; letter-spacing: 0.5px;
 }
 
 /* Карточка СНИЗУ от точки (точки у верхнего края карты): переворачиваем её */

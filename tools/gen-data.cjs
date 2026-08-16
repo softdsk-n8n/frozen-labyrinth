@@ -142,15 +142,6 @@ const META = {
     tips: { ru: 'Квестовый объект Раффорти: принесённые Серебряные Ледяные Кристаллы обмениваются здесь на Чёрные.', en: 'Rafforty’s quest object: exchange brought Silver Ice Crystals for Black ones here.' } },
 };
 
-// ---------- Порталы-выходы ----------
-// Калибровка 26-08: Сирра [847,67] (СЗ угол), Слуга Фреи [838,476] у входа в замок.
-// Порталы сэмплятся по светлым зонам соответствующих краёв (снап в gen-data ниже).
-const PORTALS = [
-  { id: 'exit-pavel', name: { ru: 'Выход: Древняя лаборатория (Руины Павла)', en: 'Exit: Archaic Laboratory (Pavel Ruins)' }, coords: [465, 55] },
-  { id: 'exit-vos', name: { ru: 'Выход: Долина Святых', en: 'Exit: Valley of Saints' }, coords: [915, 845] },
-  { id: 'exit-mos', name: { ru: 'Выход: Монастырь Молчания', en: 'Exit: Monastery of Silence' }, coords: [915, 585] },
-  { id: 'castle-sirra', name: { ru: 'Замок Ледяной Королевы', en: 'The Ice Queen’s Castle' }, coords: [915, 705] },
-];
 
 // ---------- Перевод скиллов сущности в weak/resist ----------
 function skillInfo(npc) {
@@ -231,11 +222,6 @@ for (const id of [32018, 32020, 32022, 32029, 32023]) {
       ? 'img/mobs/29056.png' : `img/mobs/${meta.img}.webp`,
     questMob: false, tips: meta.tips,
   });
-}
-for (const p of PORTALS) {
-  entities.push({ id: p.id, npcId: 0, type: 'portal', isAggro: false, level: 0,
-    hp: 0, exp: 0, sp: 0, race: null, name: p.name, weakness: [], resist: [],
-    drop: [], spoil: [], coords: p.coords, img: null, questMob: false, tips: null });
 }
 
 // ---------- Квест 648 ----------

@@ -38,7 +38,6 @@
   var markers = {}; // id -> L.Marker
 
   function markerClass(e) {
-    if (e.type === 'portal') return 'l2-marker--portal';
     if (e.type === 'boss') return 'l2-marker--boss';
     if (e.type === 'npc') return 'l2-marker--npc';
     return e.isAggro ? 'l2-marker--aggro' : 'l2-marker--passive';
@@ -68,11 +67,9 @@
   function openCardPopup(ent, latlng) {
     var pt = map.latLngToContainerPoint(latlng);
     var flip = pt.y < CARD_BUDGET;
-    var cls = flip ? 'card-flip' : '';
-    if (ent.type === 'portal') cls += (cls ? ' ' : '') + 'portal-popup';
     L.popup({
-      maxWidth: 292, minWidth: ent.type === 'portal' ? 0 : 260,
-      className: cls || undefined,
+      maxWidth: 292, minWidth: 260,
+      className: flip ? 'card-flip' : undefined,
       autoPan: !flip, keepInView: false, autoPanPadding: [32, 48],
       offset: [0, flip ? 12 : 0],
     })
@@ -121,10 +118,6 @@
   }
 
   function popupHtml(e) {
-    if (e.type === 'portal') {
-      return '<div class="popup-portal">' + esc(e.name[state.lang]) + '</div>';
-    }
-
     var badges = '';
     if (e.type === 'boss') badges += '<span class="badge badge--boss">' + esc(t('raidBoss')) + '</span>';
     else if (e.type === 'npc') badges += '<span class="badge badge--npc">NPC</span>';
