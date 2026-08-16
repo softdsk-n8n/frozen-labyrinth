@@ -23,19 +23,31 @@
 
 html, body {
   margin: 0; padding: 0; height: 100%;
-  background: #0a0d11;
   font-family: var(--font);
   color: var(--text);
   overflow: hidden;
 }
 
-#map { width: 100%; height: 100%; background: #0a0d11; }
+#map { width: 100%; height: 100%; background: transparent; }
 
-/* Чёткость пиксельной карты при зуме */
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: radial-gradient(ellipse 90% 70% at 50% 42%, #141d27 0%, #0c1218 55%, #07090c 100%);
+  font-family: var(--font);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* Чёткость пиксельной карты при зуме + мягкая растушёвка краёв в фон */
 .leaflet-image-layer {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  -webkit-mask-image: radial-gradient(closest-side at 50% 50%,
+    #000 72%, rgba(0, 0, 0, 0.75) 85%, rgba(0, 0, 0, 0.28) 94%, transparent 99.5%);
+  mask-image: radial-gradient(closest-side at 50% 50%,
+    #000 72%, rgba(0, 0, 0, 0.75) 85%, rgba(0, 0, 0, 0.28) 94%, transparent 99.5%);
 }
+.leaflet-container { background: transparent; }
 
 /* ============ Ледяная виньетка ============ */
 .vignette {
@@ -404,7 +416,13 @@ html, body {
   background-repeat: no-repeat;
   opacity: 0.9;
 }
-.leaflet-popup-content { margin: 0; width: auto !important; max-width: min(300px, 84vw); }
+/* фикс. ширина контента: без «мигания» длинной карточки при открытии */
+.leaflet-popup-content {
+  margin: 0;
+  width: min(272px, 84vw) !important;
+  box-sizing: border-box;
+}
+.portal-popup .leaflet-popup-content { width: auto !important; }
 .leaflet-popup-tip {
   background: var(--panel-bg); border: 1px solid var(--gold-border);
 }

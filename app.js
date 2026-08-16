@@ -55,6 +55,10 @@
   }
 
   // ============ Попапы ============
+  // Фиксированная ширина и никаких keepInView: карточка не «мигает» длинной
+  // версией и карта не дёргается автопаном при каждом открытии.
+  var POPUP_OPTS = { maxWidth: 292, minWidth: 260, autoPan: true, keepInView: false, autoPanPadding: [32, 48] };
+  var PORTAL_OPTS = { className: 'portal-popup', maxWidth: 280, minWidth: 0, autoPan: true, keepInView: false, autoPanPadding: [32, 48] };
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
@@ -203,8 +207,7 @@
         });
         L.marker(p, { icon: icon, keyboard: false, riseOnHover: true })
           .bindTooltip(tip, { direction: 'top', className: 'dot-tip', offset: [0, -10] })
-          .bindPopup(function () { return popupHtml(e); },
-            { maxWidth: 300, minWidth: 230, keepInView: true, autoPanPadding: [24, 24] })
+          .bindPopup(function () { return popupHtml(e); }, POPUP_OPTS)
           .addTo(spawnLayer);
       });
     });
@@ -381,7 +384,7 @@
     if (e.type === 'mob') return; // мобы представлены только спавн-точками
     var m = L.marker(e.coords, { icon: iconFor(e), title: e.name.ru + ' / ' + e.name.en });
     m.bindPopup(function () { return popupHtml(e); },
-      { maxWidth: 300, minWidth: 230, keepInView: true, autoPanPadding: [24, 24] });
+      e.type === 'portal' ? PORTAL_OPTS : POPUP_OPTS);
     markers[e.id] = m;
   });
 
@@ -462,7 +465,7 @@
       var e = ENTITIES.find(function (x) { return x.npcId === npcId; });
       if (e && e.spawnPoints && e.spawnPoints.length) {
         var center = e.spawnPoints[Math.floor(e.spawnPoints.length / 2)];
-        L.popup({ maxWidth: 300, minWidth: 230, keepInView: true, autoPanPadding: [24, 24] })
+        L.popup(POPUP_OPTS)
           .setLatLng(center)
           .setContent(popupHtml(e))
           .openOn(map);
