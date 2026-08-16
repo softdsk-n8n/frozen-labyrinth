@@ -326,6 +326,8 @@ const i18n = {
   exp: { ru: 'EXP', en: 'EXP' },
   sp: { ru: 'SP', en: 'SP' },
   markersVisible: { ru: 'маркеров', en: 'markers' },
+  musicBtn: { ru: 'Музыка', en: 'Music' },
+  musicHint: { ru: 'Фоновая музыка: OST Lineage 2 — Snowfield Dawn (вкл/выкл)', en: 'Background music: L2 OST — Snowfield Dawn (toggle)' },
   coordsHint: { ru: 'Клик по карте — координаты [y, x] в консоль', en: 'Click the map — [y, x] coordinates in console' },
   close: { ru: 'Закрыть', en: 'Close' },
   none: { ru: '—', en: '—' },

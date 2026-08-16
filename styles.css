@@ -49,6 +49,67 @@ html, body {
 }
 .leaflet-container { background: transparent; }
 
+/* ============ Северное сияние ============ */
+.aurora {
+  position: fixed; inset: 0 0 auto 0; height: 58vh; z-index: 415;
+  pointer-events: none; overflow: hidden;
+}
+.aurora i {
+  position: absolute; top: -32%; left: -20%; width: 72%; height: 125%;
+  border-radius: 50%;
+  filter: blur(30px);
+  background: linear-gradient(100deg,
+    transparent 8%, rgba(84, 214, 170, 0.15) 34%,
+    rgba(96, 160, 255, 0.13) 58%, transparent 86%);
+  animation: aurora-drift 26s ease-in-out infinite alternate;
+}
+.aurora i:nth-child(2) {
+  left: 26%; width: 62%; animation-duration: 35s; animation-delay: -9s;
+  background: linear-gradient(80deg,
+    transparent 12%, rgba(120, 200, 255, 0.12) 42%,
+    rgba(160, 120, 255, 0.10) 68%, transparent 90%);
+}
+.aurora i:nth-child(3) {
+  left: 56%; width: 66%; animation-duration: 43s; animation-delay: -21s;
+  background: linear-gradient(95deg,
+    transparent 10%, rgba(110, 255, 200, 0.10) 38%,
+    rgba(110, 190, 255, 0.12) 64%, transparent 88%);
+}
+@keyframes aurora-drift {
+  0%   { transform: translate3d(-6%, -4%, 0) skewX(-8deg) scaleY(1); opacity: .65; }
+  50%  { transform: translate3d(5%, 3%, 0) skewX(6deg) scaleY(1.18); opacity: 1; }
+  100% { transform: translate3d(-3%, -6%, 0) skewX(-4deg) scaleY(.9); opacity: .75; }
+}
+
+/* ============ Морозный туман у подножия ============ */
+.mist {
+  position: fixed; inset: auto 0 0 0; height: 30vh; z-index: 418;
+  pointer-events: none; overflow: hidden;
+}
+.mist i {
+  position: absolute; bottom: -42%; width: 62vw; height: 78%;
+  border-radius: 50%;
+  filter: blur(32px);
+  background: radial-gradient(ellipse at center, rgba(160, 210, 255, 0.10), transparent 70%);
+  animation: mist-drift 44s ease-in-out infinite alternate;
+}
+.mist i:nth-child(1) { left: -12%; }
+.mist i:nth-child(2) { left: 46%; animation-duration: 58s; animation-delay: -20s; opacity: .8; }
+@keyframes mist-drift {
+  from { transform: translate3d(-7vw, 0, 0) scaleX(1); }
+  to   { transform: translate3d(7vw, -3%, 0) scaleX(1.12); }
+}
+
+/* ============ Морозные уголки экрана ============ */
+.frost {
+  position: fixed; inset: 0; z-index: 419; pointer-events: none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(190, 230, 255, 0.13), transparent 27vw),
+    radial-gradient(circle at 100% 0%, rgba(190, 230, 255, 0.10), transparent 25vw),
+    radial-gradient(circle at 0% 100%, rgba(190, 230, 255, 0.11), transparent 27vw),
+    radial-gradient(circle at 100% 100%, rgba(190, 230, 255, 0.14), transparent 29vw);
+}
+
 /* ============ Ледяная виньетка ============ */
 .vignette {
   position: fixed; inset: 0; z-index: 420; pointer-events: none;
@@ -118,6 +179,40 @@ html, body {
     radial-gradient(1.8px 1.8px at 50% 90%, rgba(210, 240, 255, 0.8) 50%, transparent 51%);
   background-size: 560px 560px;
   animation-duration: 17s;
+}
+/* крупные размытые хлопья — передний план, глубина резкости */
+.snow-layer--xl {
+  background-image:
+    radial-gradient(5px 5px at 18% 32%, rgba(255,255,255,0.38) 46%, transparent 54%),
+    radial-gradient(6px 6px at 72% 64%, rgba(255,255,255,0.30) 46%, transparent 54%),
+    radial-gradient(4px 4px at 42% 86%, rgba(230,246,255,0.32) 46%, transparent 54%),
+    radial-gradient(5.5px 5.5px at 88% 18%, rgba(255,255,255,0.26) 46%, transparent 54%);
+  background-size: 780px 780px;
+  filter: blur(1.4px);
+  animation-duration: 13s;
+}
+/* блёстки-искры: мерцают на месте */
+.sparkles {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1.6px 1.6px at 15% 22%, #fff 52%, transparent 58%),
+    radial-gradient(1.4px 1.4px at 55% 41%, #dff4ff 52%, transparent 58%),
+    radial-gradient(1.8px 1.8px at 81% 72%, #fff 52%, transparent 58%),
+    radial-gradient(1.2px 1.2px at 33% 63%, #cfeaff 52%, transparent 58%),
+    radial-gradient(1.5px 1.5px at 68% 12%, #fff 52%, transparent 58%),
+    radial-gradient(1.3px 1.3px at 92% 38%, #eaf7ff 52%, transparent 58%);
+  background-size: 350px 350px;
+  animation: sparkle 5.2s ease-in-out infinite;
+}
+.sparkles--alt {
+  background-position: 120px 80px;
+  animation-duration: 7.4s;
+  animation-delay: -2.6s;
+  opacity: .8;
+}
+@keyframes sparkle {
+  0%, 100% { opacity: .08; }
+  50%      { opacity: .8; }
 }
 @keyframes snow-fall {
   from { transform: translate3d(0, 0, 0); }
@@ -627,7 +722,37 @@ html, body {
 }
 .leaflet-bar a:hover { color: var(--gold) !important; }
 
-/* Боковая клавиша панели — только на мобильных */
+/* ============ Фоновая музыка ============ */
+.music-btn {
+  position: absolute; right: 14px; bottom: 122px; z-index: 1150;
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; color: var(--gold-dim);
+  background: var(--panel-bg);
+  border: 1px solid var(--gold-border);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5), 0 3px 10px rgba(0,0,0,0.55);
+  cursor: pointer;
+  transition: color .15s, border-color .15s, box-shadow .15s, transform .15s;
+}
+.music-btn:hover { color: var(--gold); border-color: var(--gold-border-hi); transform: scale(1.06); }
+.music-btn .music-note { line-height: 1; text-shadow: 0 1px 2px #000; pointer-events: none; }
+.music-btn.is-active {
+  color: #1a1408; background: linear-gradient(180deg, #f0d9a0, #cdb26e);
+  border-color: var(--gold-border-hi); text-shadow: none;
+  box-shadow: 0 0 14px rgba(232, 208, 141, 0.45), 0 3px 10px rgba(0,0,0,0.5);
+  animation: music-pulse 2.4s ease-in-out infinite;
+}
+@keyframes music-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(232, 208, 141, 0.3), 0 3px 10px rgba(0,0,0,0.5); }
+  50%      { box-shadow: 0 0 18px rgba(232, 208, 141, 0.6), 0 3px 10px rgba(0,0,0,0.5); }
+}
+/* скрытый YouTube-плеер: должен быть в DOM и «видим» для браузера, но не на экране */
+.yt-music {
+  position: absolute; width: 2px; height: 2px;
+  left: -10px; bottom: 0; opacity: 0.01; pointer-events: none; overflow: hidden;
+}
+
+/* ============ Мобильная панель-шторка (см. media ниже) ============ */
 .panel-toggle { display: none; }
 
 @media (max-width: 640px) {
@@ -679,6 +804,9 @@ html, body {
 
   /* зум-кнопки крупнее */
   .leaflet-bar a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 18px !important; }
+
+  /* музыка: кнопка на месте скрытого компаса */
+  .music-btn { right: 10px; bottom: 12px; width: 46px; height: 46px; font-size: 19px; }
 
   /* боковая клавиша: вкладка у правого края */
   .panel-toggle {

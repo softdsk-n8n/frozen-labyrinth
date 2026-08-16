@@ -4351,6 +4351,14 @@ const APP = {
       "ru": "маркеров",
       "en": "markers"
     },
+    "musicBtn": {
+      "ru": "Музыка",
+      "en": "Music"
+    },
+    "musicHint": {
+      "ru": "Фоновая музыка: OST Lineage 2 — Snowfield Dawn (вкл/выкл)",
+      "en": "Background music: L2 OST — Snowfield Dawn (toggle)"
+    },
     "coordsHint": {
       "ru": "Клик по карте — координаты [y, x] в консоль",
       "en": "Click the map — [y, x] coordinates in console"

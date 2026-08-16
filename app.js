@@ -264,6 +264,7 @@
     var qb = document.getElementById('questBtn');
     qb.classList.toggle('is-active', state.questHighlight);
     document.getElementById('spawnsBtn').classList.toggle('is-active', state.showSpawns);
+    renderMusicBtn();
     renderQuestModal();
     renderGuideModal();
     // переоткрыть текущий попап на новом языке
@@ -460,7 +461,62 @@
     }
   });
 
-  // Легенда
+  // ============ Фоновая музыка: OST Lineage 2 — Snowfield Dawn ============
+  var MUSIC_ID = 'gyTFZIjbXlY';
+  var musicBtn = document.getElementById('musicToggle');
+  var ytPlayer = null;
+  var musicOn = localStorage.getItem('fl-music') === 'on';
+  var musicStarted = false;
+
+  function renderMusicBtn() {
+    if (!musicBtn) return; // при инициализации панели плеер ещё не создан
+    musicBtn.classList.toggle('is-active', musicStarted && musicOn);
+    musicBtn.setAttribute('aria-pressed', musicStarted && musicOn ? 'true' : 'false');
+    musicBtn.title = t('musicHint');
+  }
+
+  window.onYouTubeIframeAPIReady = function () {
+    ytPlayer = new YT.Player('ytMusic', {
+      videoId: MUSIC_ID,
+      playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: MUSIC_ID, playsinline: 1 },
+      events: {
+        onReady: function () { ytPlayer.setVolume(35); },
+        onStateChange: function (ev) {
+          if (ev.data === YT.PlayerState.PLAYING) musicStarted = true;
+          renderMusicBtn();
+        },
+      },
+    });
+  };
+  (function loadYT() {
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  })();
+
+  musicBtn.addEventListener('click', function () {
+    if (!ytPlayer || !ytPlayer.playVideo) return;
+    if (musicOn && musicStarted) {
+      ytPlayer.pauseVideo();
+      musicOn = false;
+    } else {
+      ytPlayer.playVideo();
+      musicOn = true;
+    }
+    localStorage.setItem('fl-music', musicOn ? 'on' : 'off');
+    renderMusicBtn();
+  });
+
+  // если музыка была включена — возобновляем после первого клика/тапа (автоплей запрещён)
+  document.addEventListener('click', function (ev) {
+    if (musicOn && !musicStarted && ytPlayer && ytPlayer.playVideo && ev.target !== musicBtn) {
+      ytPlayer.playVideo();
+    }
+  }, true);
+
+  renderMusicBtn();
+
+  // ============ Легенда ============
   var legend = L.control({ position: 'bottomleft' });
   legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'l2-panel legend');

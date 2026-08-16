@@ -10,10 +10,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <link rel="stylesheet" href="styles.css?v=20260817">
+  <link rel="stylesheet" href="styles.css?v=20260818">
 </head>
 <body>
   <div id="map"></div>
+
+  <!-- Северное сияние -->
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- Морозный туман у подножия -->
+  <div class="mist" aria-hidden="true"><i></i><i></i></div>
+
+  <!-- Морозные уголки экрана -->
+  <div class="frost" aria-hidden="true"></div>
 
   <!-- Ледяная виньетка поверх карты -->
   <div class="vignette" aria-hidden="true"></div>
@@ -41,11 +50,14 @@
     <text x="50" y="7.5" font-size="9" text-anchor="middle" fill="#e8d08d" font-family="Cinzel, serif">N</text>
   </svg>
 
-  <!-- Снегопад (декоративный) -->
+  <!-- Снегопад (декоративный): 4 слоя глубины + блёстки -->
   <div class="snowfall" aria-hidden="true">
     <div class="snow-layer snow-layer--far"></div>
     <div class="snow-layer snow-layer--mid"></div>
     <div class="snow-layer snow-layer--near"></div>
+    <div class="snow-layer snow-layer--xl"></div>
+    <div class="sparkles"></div>
+    <div class="sparkles sparkles--alt"></div>
   </div>
 
   <!-- Панель управления -->
@@ -91,6 +103,12 @@
   <!-- Боковая клавиша панели (мобильные) -->
   <button id="panelToggle" class="panel-toggle" aria-label="Меню">☰</button>
 
+  <!-- Фоновая музыка (OST Lineage 2 — Snowfield Dawn) -->
+  <button id="musicToggle" class="music-btn" aria-pressed="false" title="">
+    <span class="music-note" aria-hidden="true">♫</span>
+  </button>
+  <div id="ytMusic" class="yt-music" aria-hidden="true"></div>
+
   <!-- Модальное окно: квест -->
   <div class="modal-backdrop" id="questModal" hidden>
     <div class="l2-panel modal" role="dialog" aria-modal="true">
@@ -115,7 +133,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="data.js?v=20260817"></script>
-  <script src="app.js?v=20260817"></script>
+  <script src="data.js?v=20260818"></script>
+  <script src="app.js?v=20260818"></script>
 </body>
 </html>
