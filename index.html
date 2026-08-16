@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frozen Labyrinth — Lineage 2 Interlude</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Снегопад (декоративный) -->
+  <div class="snowfall" aria-hidden="true">
+    <div class="snow-layer snow-layer--far"></div>
+    <div class="snow-layer snow-layer--near"></div>
+  </div>
+
+  <!-- Панель управления -->
+  <aside id="panel" class="l2-panel">
+    <header class="panel-header">
+      <h1 class="panel-title" data-i18n="title"></h1>
+      <p class="panel-subtitle" data-i18n="subtitle"></p>
+    </header>
+
+    <section class="panel-section">
+      <div class="lang-switch" id="langSwitch">
+        <button class="l2-btn l2-btn--lang" data-lang="ru">RU</button>
+        <button class="l2-btn l2-btn--lang" data-lang="en">EN</button>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="filters" id="filters">
+        <button class="l2-btn" data-filter="all" data-i18n="filterAll"></button>
+        <button class="l2-btn" data-filter="npc" data-i18n="filterNpc"></button>
+        <button class="l2-btn" data-filter="aggro" data-i18n="filterAggro"></button>
+        <button class="l2-btn" data-filter="passive" data-i18n="filterPassive"></button>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <button class="l2-btn l2-btn--quest" id="questBtn" data-i18n="questBtn"></button>
+      <button class="l2-btn l2-btn--guide" id="guideBtn" data-i18n="guideBtn"></button>
+      <button class="l2-btn l2-btn--spawns" id="spawnsBtn" data-i18n="spawnsBtn"></button>
+    </section>
+
+    <section class="panel-section panel-section--list">
+      <h3 class="panel-section-title" data-i18n="mobListTitle"></h3>
+      <div id="mobList" class="mob-list"></div>
+    </section>
+
+    <footer class="panel-footer">
+      <span id="markerCount" class="marker-count">0</span>
+      <span data-i18n="markersVisible"></span>
+      <span class="coords-hint" data-i18n="coordsHint"></span>
+    </footer>
+  </aside>
+
+  <!-- Модальное окно: квест -->
+  <div class="modal-backdrop" id="questModal" hidden>
+    <div class="l2-panel modal" role="dialog" aria-modal="true">
+      <header class="modal-header">
+        <h2 id="questTitle"></h2>
+        <button class="l2-btn l2-btn--close" id="questClose">&times;</button>
+      </header>
+      <div class="modal-body" id="questBody"></div>
+    </div>
+  </div>
+
+  <!-- Модальное окно: гайд -->
+  <div class="modal-backdrop" id="guideModal" hidden>
+    <div class="l2-panel modal" role="dialog" aria-modal="true">
+      <header class="modal-header">
+        <h2 id="guideTitle"></h2>
+        <button class="l2-btn l2-btn--close" id="guideClose">&times;</button>
+      </header>
+      <div class="modal-body" id="guideBody"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
