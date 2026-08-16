@@ -60,7 +60,26 @@
   // Фиксированная ширина и никаких keepInView: карточка не «мигает» длинной
   // версией и карта не дёргается автопаном при каждом открытии.
   var POPUP_OPTS = { maxWidth: 292, minWidth: 260, autoPan: true, keepInView: false, autoPanPadding: [32, 48] };
-  var PORTAL_OPTS = { className: 'portal-popup', maxWidth: 280, minWidth: 0, autoPan: true, keepInView: false, autoPanPadding: [32, 48] };
+
+  // Карточка открывается СВЕРХУ точки, если над ней есть место (≈440px);
+  // для точек у верхнего края — СНИЗУ (класс card-flip), чтобы не уезжать
+  // за край и не дёргать камеру автопаном.
+  var CARD_BUDGET = 440;
+  function openCardPopup(ent, latlng) {
+    var pt = map.latLngToContainerPoint(latlng);
+    var flip = pt.y < CARD_BUDGET;
+    var cls = flip ? 'card-flip' : '';
+    if (ent.type === 'portal') cls += (cls ? ' ' : '') + 'portal-popup';
+    L.popup({
+      maxWidth: 292, minWidth: ent.type === 'portal' ? 0 : 260,
+      className: cls || undefined,
+      autoPan: !flip, keepInView: false, autoPanPadding: [32, 48],
+      offset: [0, flip ? 12 : 0],
+    })
+      .setLatLng(latlng)
+      .setContent(popupHtml(ent))
+      .openOn(map);
+  }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
@@ -72,17 +91,6 @@
     if (!e.level) return '';
     var hi = e.level >= 60 ? ' popup-lvl--hi' : '';
     return '<span class="popup-lvl' + hi + '">' + esc(t('level')) + ' <b>' + e.level + '</b></span>';
-  }
-
-  // HP-полоска в стиле клиента: зелёная → жёлтая → красная по величине; босс — ледяная
-  function hpHtml(e) {
-    if (e.type !== 'mob' && e.type !== 'boss') return '';
-    var max = e.type === 'boss' ? 80000 : 2200;
-    var pct = Math.max(5, Math.min(100, Math.round(e.hp / max * 100)));
-    var tone = pct > 60 ? 'hp-hi' : pct > 30 ? 'hp-mid' : 'hp-low';
-    if (e.type === 'boss') tone = 'hp-boss';
-    return '<span class="hp-bar"><i class="' + tone + '" style="width:' + pct + '%"></i></span>' +
-      '<b class="hp-val">' + e.hp.toLocaleString('ru-RU') + '</b>';
   }
 
   function xpHtml(e) {
@@ -136,8 +144,8 @@
         lvlHtml(e) + '</div>';
     }
 
-    var statLine = (e.type === 'mob' || e.type === 'boss')
-      ? '<div class="popup-statline">' + hpHtml(e) + xpHtml(e) + '</div>' : '';
+    var statLine = (e.type === 'mob' && (e.exp || e.sp))
+      ? '<div class="popup-statline">' + xpHtml(e) + '</div>' : '';
 
     var html = '<div class="popup-card">' + head +
       '<div class="popup-badges">' + badges + '</div>' +
@@ -208,7 +216,7 @@
         });
         L.marker(p, { icon: icon, keyboard: false, riseOnHover: true })
           .bindTooltip(tip, { direction: 'top', className: 'dot-tip', offset: [0, -10] })
-          .bindPopup(function () { return popupHtml(e); }, POPUP_OPTS)
+          .on('click', function (ev) { openCardPopup(e, ev.latlng); })
           .addTo(spawnLayer);
       });
     });
@@ -397,8 +405,7 @@
   ENTITIES.forEach(function (e) {
     if (e.type === 'mob') return; // мобы представлены только спавн-точками
     var m = L.marker(e.coords, { icon: iconFor(e), title: e.name.ru + ' / ' + e.name.en });
-    m.bindPopup(function () { return popupHtml(e); },
-      e.type === 'portal' ? PORTAL_OPTS : POPUP_OPTS);
+    m.on('click', function (ev) { openCardPopup(e, ev.latlng); });
     markers[e.id] = m;
   });
 
@@ -542,10 +549,7 @@
       var e = ENTITIES.find(function (x) { return x.npcId === npcId; });
       if (e && e.spawnPoints && e.spawnPoints.length) {
         var center = e.spawnPoints[Math.floor(e.spawnPoints.length / 2)];
-        L.popup(POPUP_OPTS)
-          .setLatLng(center)
-          .setContent(popupHtml(e))
-          .openOn(map);
+        openCardPopup(e, center);
       }
     },
   };
