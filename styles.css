@@ -22,7 +22,7 @@
   --ice: #7fd4ff;
   --purple: #b44ae0;
   --lvl-hi: #ff9c3f;
-  --font: Tahoma, Arial, 'Segoe UI', sans-serif;
+  --font: 'MS Gothic', 'MS PGothic', Tahoma, monospace;
   --font-title: 'Cinzel', 'Times New Roman', serif;
   --font-l2: 'Lineage2', 'Cinzel', serif;
 }
@@ -324,7 +324,7 @@ html, body {
   border-bottom: 1px solid rgba(90, 75, 49, 0.6);
 }
 .panel-title {
-  margin: 0; font-family: var(--font-title); font-size: 13.5px; font-weight: 700;
+  margin: 0; font-family: var(--font-l2); font-size: 13px; font-weight: normal;
   color: var(--gold); letter-spacing: 0.8px; text-shadow: 0 1px 2px #000;
 }
 .panel-subtitle {
