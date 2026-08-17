@@ -206,7 +206,10 @@ for (const id of [32018, 32020, 32022, 32029, 32023]) {
     hp: npc.stats.hp, exp: 0, sp: 0, race: null,
     name: { ru: meta.ru, en: npc.name },
     weakness: [], resist: [], drop: [], spoil: [],
-    coords: meta.coords, img: meta.img ? `img/mobs/${meta.img}.webp` : null,
+    coords: meta.coords, img: meta.img
+      ? (fs.existsSync(path.join(__dirname, '..', 'img', 'mobs', meta.img + '.png'))
+          ? `img/mobs/${meta.img}.png` : `img/mobs/${meta.img}.webp`)
+      : null,
     questMob: false, questGiver: !!meta.questGiver, tips: meta.tips,
   });
 }

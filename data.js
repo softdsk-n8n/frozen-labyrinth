@@ -3810,7 +3810,7 @@ const APP = {
         710,
         230
       ],
-      "img": "img/mobs/misa.webp",
+      "img": "img/mobs/misa.png",
       "questMob": false,
       "questGiver": false,
       "tips": {
