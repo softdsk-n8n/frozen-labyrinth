@@ -298,6 +298,10 @@
         '<div class="quest-step-desc">' + esc(s.desc[state.lang]) + '</div></div>';
     }).join('');
 
+    if (q.reward) {
+      html += '<div class="quest-reward">' + esc(q.reward[state.lang]) + '</div>';
+    }
+
     html += '<button class="l2-btn quest-hl-btn" id="questHighlightBtn">' +
       esc(state.questHighlight ? t('questHideMobs') : t('questShowMobs')) + '</button>';
 

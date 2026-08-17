@@ -763,6 +763,13 @@ html, body {
 .quest-item { text-align: center; font-size: 10px; color: var(--text-dim); width: 86px; }
 .quest-item img { width: 32px; height: 32px; display: block; margin: 0 auto 4px; border: 1px solid rgba(232,208,141,0.3); background: #0d1218; }
 
+.quest-reward {
+  margin: 12px 0 8px; padding: 8px 10px;
+  background: linear-gradient(180deg, rgba(232, 208, 141, 0.12), rgba(232, 208, 141, 0.04));
+  border: 1px solid rgba(232, 208, 141, 0.45);
+  border-left: 3px solid var(--gold);
+  font-size: 12px; line-height: 1.5; color: var(--text);
+}
 .quest-hl-btn { width: 100%; margin-top: 6px; }
 
 .guide-block { margin-bottom: 14px; }

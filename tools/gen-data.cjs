@@ -246,11 +246,22 @@ const quest = {
     {
       title: { ru: 'Берегите Серебряные Гемоциты', en: 'Save the Silver Hemocytes' },
       desc: {
-        ru: 'Раффорти благодарит и просит беречь Серебряные Гемоциты «на будущее». За Чёрный Ледяной Кристалл он даст награду. Чёрный кристалл можно получить у Ледяного шельфа (обмен).',
-        en: 'Rafforty thanks you and asks to save Silver Hemocytes for the future. Bring a Black Ice Crystal for a reward. It can be crafted at the Ice Shelf (exchange).',
+        ru: 'Раффорти благодарит и просит беречь Серебряные Гемоциты на будущее (пригодятся в цепочке квеста 115). Серебряные кристаллы пока не сдавайте: их можно улучшить.',
+        en: 'Rafforty thanks you and asks to save Silver Hemocytes for the future (needed for quest 115 chain). Do not hand in Silver Crystals yet: they can be upgraded.',
+      },
+    },
+    {
+      title: { ru: 'Обмен у Ледяного шельфа', en: 'Exchange at the Ice Shelf' },
+      desc: {
+        ru: 'Ледяной шельф на входе пытается переделать Серебряный Ледяной Кристалл в Чёрный. Попытка не всегда удачна — кристалл может разбиться.',
+        en: 'The Ice Shelf at the entrance attempts to convert a Silver Ice Crystal into a Black one. The attempt may fail — the crystal can shatter.',
       },
     },
   ],
+  reward: {
+    ru: 'Награда у Раффорти: Серебряный Ледяной Кристалл — 300 адены за штуку, Чёрный Ледяной Кристалл — 1 200 адены за штуку. Сдавать можно в любом количестве, квест повторяемый.',
+    en: 'Reward from Rafforty: Silver Ice Crystal — 300 adena each, Black Ice Crystal — 1,200 adena each. Hand in any amount, the quest is repeatable.',
+  },
   huntMobIds: MOB_IDS,
 };
 
