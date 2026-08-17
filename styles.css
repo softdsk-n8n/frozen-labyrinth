@@ -1,5 +1,12 @@
 /* ============ Frozen Labyrinth — L2 Interlude UI ============ */
 
+@font-face {
+  font-family: 'Lineage2';
+  src: url('fonts/lineage2.ttf') format('truetype');
+  font-weight: normal; font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --panel-bg: rgba(15, 20, 25, 0.92);
   --panel-bg-soft: rgba(22, 29, 36, 0.85);
@@ -17,6 +24,7 @@
   --lvl-hi: #ff9c3f;
   --font: Tahoma, Arial, 'Segoe UI', sans-serif;
   --font-title: 'Cinzel', 'Times New Roman', serif;
+  --font-l2: 'Lineage2', 'Cinzel', serif;
 }
 
 * { box-sizing: border-box; }
@@ -145,7 +153,7 @@ html, body {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 26px rgba(127, 212, 255, 0.35);
 }
 .map-title h1 {
-  margin: 0; font-family: var(--font-title); font-weight: 700;
+  margin: 0; font-family: var(--font-l2); font-weight: normal;
   font-size: clamp(20px, 3.4vw, 34px); letter-spacing: 3px;
   color: #e9f4ff; text-transform: uppercase;
   background: linear-gradient(180deg, #f4fbff 25%, #9fd8f4 60%, #5fa8cc);
@@ -153,9 +161,10 @@ html, body {
   -webkit-text-fill-color: transparent;
 }
 .map-title span {
-  display: block; margin-top: 2px;
-  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(232, 208, 141, 0.8);
+  display: block; margin-top: 3px;
+  font-family: var(--font-l2);
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(232, 208, 141, 0.9);
 }
 /* морозное свечение заголовка пульсирует */
 .map-title h1 {
