@@ -3870,7 +3870,7 @@ const APP = {
         290,
         150
       ],
-      "img": "img/mobs/kier.webp",
+      "img": "img/mobs/kier.png",
       "questMob": false,
       "questGiver": false,
       "tips": {
