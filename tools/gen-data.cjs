@@ -289,7 +289,8 @@ const guide = [
 
 // ---------- i18n ----------
 const i18n = {
-  title: { ru: 'Frozen Labyrinth — интерактивная карта', en: 'Frozen Labyrinth — Interactive Map' },
+  title: { ru: 'Frozen Labyrinth', en: 'Frozen Labyrinth' },
+  interactiveMap: { ru: 'Интерактивная карта', en: 'Interactive Map' },
   subtitle: { ru: 'Lineage 2: Interlude', en: 'Lineage 2: Interlude' },
   filterAll: { ru: 'Все', en: 'Show All' },
   filterNpc: { ru: 'NPC', en: 'NPCs Only' },

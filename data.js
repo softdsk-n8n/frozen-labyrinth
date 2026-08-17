@@ -4126,8 +4126,12 @@ const APP = {
   ],
   "i18n": {
     "title": {
-      "ru": "Frozen Labyrinth — интерактивная карта",
-      "en": "Frozen Labyrinth — Interactive Map"
+      "ru": "Frozen Labyrinth",
+      "en": "Frozen Labyrinth"
+    },
+    "interactiveMap": {
+      "ru": "Интерактивная карта",
+      "en": "Interactive Map"
     },
     "subtitle": {
       "ru": "Lineage 2: Interlude",
