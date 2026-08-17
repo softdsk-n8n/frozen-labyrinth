@@ -137,7 +137,7 @@ const META = {
     tips: { ru: 'РЕЙД-БОСС 60 лвл, ~79k HP, со свитой (Sirra’s Page, Sirra’s Beholder). Мост к замку открывается через квест 648. Нужна пати с хилом.', en: 'RAID BOSS lvl 60, ~79k HP, with minions (Sirra’s Page, Sirra’s Beholder). Bridge opens via quest 648. Bring a party with a healer.' } },
   32029: { ru: 'Слуга Фреи', img: 'steward', coords: [900, 360], npc: true,
     tips: { ru: 'NPC у входа в замок, связан с лором Фреи.', en: 'NPC at the castle entrance, tied to Freya lore.' } },
-  32023: { ru: 'Ледяной шельф', img: null, npc: true, questGiver: true,
+  32023: { ru: 'Ледяной шельф', img: 'shelf', npc: true, questGiver: true,
     coords: [45, 560],
     tips: { ru: 'Квестовый объект Раффорти: принесённые Серебряные Ледяные Кристаллы обмениваются здесь на Чёрные.', en: 'Rafforty’s quest object: exchange brought Silver Ice Crystals for Black ones here.' } },
 };

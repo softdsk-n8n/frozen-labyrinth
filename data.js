@@ -3930,7 +3930,7 @@ const APP = {
         330,
         450
       ],
-      "img": null,
+      "img": "img/mobs/shelf.png",
       "questMob": false,
       "questGiver": true,
       "tips": {
