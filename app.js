@@ -466,10 +466,12 @@
   });
 
   // ============ Фоновая музыка: OST Lineage 2 — Snowfield Dawn ============
+  // Автостарт: при открытии играет беззвучно (браузеры запрещают звук без
+  // действия пользователя), первый клик/тап по карте включает звук.
   var MUSIC_ID = 'gyTFZIjbXlY';
   var musicBtn = document.getElementById('musicToggle');
   var ytPlayer = null;
-  var musicOn = localStorage.getItem('fl-music') === 'on';
+  var musicOn = localStorage.getItem('fl-music') !== 'off'; // по умолчанию ВКЛ
   var musicStarted = false;
 
   function renderMusicBtn() {
@@ -482,9 +484,13 @@
   window.onYouTubeIframeAPIReady = function () {
     ytPlayer = new YT.Player('ytMusic', {
       videoId: MUSIC_ID,
-      playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: MUSIC_ID, playsinline: 1 },
+      playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: MUSIC_ID, playsinline: 1 },
       events: {
-        onReady: function () { ytPlayer.setVolume(35); },
+        onReady: function () {
+          ytPlayer.setVolume(35);
+          try { ytPlayer.unMute(); } catch (e) { /* без жеста может быть запрещено — включит первый клик */ }
+          try { ytPlayer.playVideo(); } catch (e) {}
+        },
         onStateChange: function (ev) {
           if (ev.data === YT.PlayerState.PLAYING) musicStarted = true;
           renderMusicBtn();
@@ -511,11 +517,21 @@
     renderMusicBtn();
   });
 
-  // если музыка была включена — возобновляем после первого клика/тапа (автоплей запрещён)
+  // первый жест пользователя: включаем звук у беззвучного автостарта
+  // (или запускаем плеер, если браузер заблокировал даже беззвучный автоплей)
   document.addEventListener('click', function (ev) {
-    if (musicOn && !musicStarted && ytPlayer && ytPlayer.playVideo && ev.target !== musicBtn) {
-      ytPlayer.playVideo();
-    }
+    if (!musicOn || !ytPlayer || !ytPlayer.playVideo || ev.target === musicBtn) return;
+    try {
+      if (ytPlayer.isMuted && ytPlayer.isMuted()) ytPlayer.unMute();
+      if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) ytPlayer.playVideo();
+    } catch (e) {}
+  }, true);
+  document.addEventListener('keydown', function () {
+    if (!musicOn || !ytPlayer || !ytPlayer.playVideo) return;
+    try {
+      if (ytPlayer.isMuted && ytPlayer.isMuted()) ytPlayer.unMute();
+      if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) ytPlayer.playVideo();
+    } catch (e) {}
   }, true);
 
   renderMusicBtn();
